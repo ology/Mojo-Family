@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 use Mojolicious::Lite;
+use Mojo::Template;
 
 use lib 'lib';
 use WS::Model::Users;
@@ -81,7 +82,7 @@ get '/logout' => sub {
     $c->redirect_to('index');
 };
 
-any '/chat' => 'chat';
+any '/chat';
 
 app->start;
 __DATA__
@@ -103,10 +104,11 @@ __DATA__
 </div>
 
 @@ chat.html.ep
+% my $placeholder = "What's on your mind, " . $c->session('user') . '?';
 % layout 'default', title => 'Family Chat';
 <div class="container">
 <h1><%= title %></h1>
-%= text_area 'chat', name => 'text', class => 'chat', id => 'chat'
+%= text_area 'chat', name => 'text', class => 'chat', id => 'chat', placeholder => $placeholder
 %= tag 'br'
 %= submit_button 'submit', name => 'submit', value => 'Chat', id => 'submit', class => 'button-primary'
 %= tag 'br'
