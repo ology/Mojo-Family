@@ -1,0 +1,132 @@
+#!/usr/bin/env perl
+
+use Mojolicious::Lite;
+
+use lib 'lib';
+use WS::Model::Users;
+
+# Make signed cookies tamper resistant
+app->secrets(['Mojolicious rocks']);
+
+# Helper to lazy initialize and store our model object
+helper users => sub { state $users = WS::Model::Users->new };
+ 
+my $clients = {};
+
+websocket '/echo' => sub {
+    my $c = shift;
+
+    my $id = sprintf '%s', $c->tx;
+    $clients->{$id} = $c->tx;
+
+    $c->on(json => sub {
+        my ($ctrl, $hash) = @_;
+
+        $hash->{msg} =~ s/\n/<br>/g;
+
+        for (keys %$clients) {
+            $clients->{$_}->send({json => $hash});
+        }
+    });
+};
+ 
+any '/' => sub {
+    my $c = shift;
+
+    # Query parameters
+    my $user = $c->param('user') || '';
+    my $pass = $c->param('pass') || '';
+
+    # Check password
+    return $c->render
+        unless $c->users->check($user, $pass);
+
+    # Store username in session
+    $c->session(user => $user);
+
+    # Store a friendly message for the next page in flash
+#    $c->flash(message => 'Thanks for logging in.');
+
+    # Redirect to protected page with a 302 response
+    $c->redirect_to('chat');
+} => 'index';
+ 
+# Make sure user is logged in for actions in this group
+group {
+    under sub {
+        my $c = shift;
+        # Redirect to main page with a 302 response if user is not logged in
+        return 1 if $c->session('user');
+        $c->redirect_to('index');
+        return undef;
+    };
+
+    # A protected page
+    get '/chat';
+};
+
+# Logout action
+get '/logout' => sub {
+    my $c = shift;
+
+    # Expire and in turn clear session automatically
+    $c->session(expires => 1);
+
+    # Redirect to main page with a 302 response
+    $c->redirect_to('index');
+};
+
+any '/chat' => 'chat';
+
+app->start;
+__DATA__
+
+@@ index.html.ep
+% layout 'default', title => 'Login Manager';
+%= form_for index => begin
+    % if (param 'user') {
+        <b>Wrong name or password, please try again.</b><br>
+    % }
+    Name:<br>
+    %= text_field 'user'
+    <br>Password:<br>
+    %= password_field 'pass'
+    <br>
+    %= submit_button 'Login'
+% end
+
+
+@@ chat.html.ep
+% layout 'default', title => 'Family Chat';
+<h1><%= title %></h1>
+<textarea name="chat" id="chat"></textarea><br>
+<input type="submit" name="submit" value="Submit" id="submit" /><br>
+<div name="data" id="data"></div>
+<script>
+    var ws = new WebSocket('<%= url_for('echo')->to_abs %>');
+    ws.onmessage = function (event) {
+        $('#data').append('<p>' + JSON.parse(event.data).msg + '</p>');
+    };
+    ws.onopen = function (event) {
+        console.log('ws.onopen');
+    };
+    $('#submit').click(function (e) {
+        if ($('#chat').val()) {
+            ws.send(JSON.stringify({msg: $('#chat').val()}));
+            $('#chat').val('');
+        }
+    });
+</script>
+
+
+@@ layouts/default.html.ep
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<%= content %>
+</body>
+</html>
