@@ -8,6 +8,11 @@ use WS::Model::Users;
 # Make signed cookies tamper resistant
 app->secrets(['Mojolicious rocks']);
 
+# Fix static paths
+pop @{app->static->paths};
+push @{app->static->paths} => '/Users/gene/sandbox/Mojo-Family/public',
+                              '/Users/gene/sandbox/Mojo-Family/public/css';
+
 # Helper to lazy initialize and store our model object
 helper users => sub { state $users = WS::Model::Users->new };
  
@@ -82,26 +87,40 @@ app->start;
 __DATA__
 
 @@ index.html.ep
-% layout 'default', title => 'Login Manager';
+% layout 'default', title => 'Login';
+<div class="container">
+<h1><%= title %></h1>
 %= form_for index => begin
     % if (param 'user') {
         <b>Wrong name or password, please try again.</b><br>
     % }
-    Name:<br>
-    %= text_field 'user'
-    <br>Password:<br>
-    %= password_field 'pass'
-    <br>
+    %= text_field 'user', placeholder => 'Name'
+    %= tag 'br'
+    %= password_field 'pass', placeholder => 'Password'
+    %= tag 'br'
     %= submit_button 'Login'
 % end
-
+</div>
 
 @@ chat.html.ep
 % layout 'default', title => 'Family Chat';
+<div class="container">
 <h1><%= title %></h1>
-<textarea name="chat" id="chat"></textarea><br>
-<input type="submit" name="submit" value="Submit" id="submit" /><br>
-<div name="data" id="data"></div>
+%= text_area 'chat', name => 'text', class => 'chat', id => 'chat'
+%= tag 'br'
+%= submit_button 'submit', name => 'submit', value => 'Chat', id => 'submit', class => 'button-primary'
+%= tag 'br'
+<div class="row">
+    <div class="nine columns">
+%= tag 'div', name => 'data', id => 'data'
+    </div>
+    <div class="three columns">
+        <b>This month:</b>
+%= tag 'br'
+        <ul class="event">
+        </ul>
+    </div>
+</div>
 <script>
     var ws = new WebSocket('<%= url_for('echo')->to_abs %>');
     ws.onmessage = function (event) {
@@ -117,16 +136,34 @@ __DATA__
         }
     });
 </script>
+</div>
 
 
 @@ layouts/default.html.ep
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title><%= title %></title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="google" content="notranslate">
+    <link rel="stylesheet" type="text/css" href="<%= url_for 'normalize.css' %>">
+    <link rel="stylesheet" type="text/css" href="<%= url_for 'skeleton.css' %>">
+    <link rel="stylesheet" type="text/css" href="<%= url_for 'style.css' %>">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 <%= content %>
+<div class="row brown">
+<div class="four columns leftpad">
+<%= link_to '/privacy.html' => begin %>Privacy policy<% end %>
+</div>
+<div class="four columns centerpad">
+<%= link_to '/help.html' => begin %>Help<% end %>
+</div>
+<div class="four columns rightpad">
+    Built by <a href="http://gene.ology.net/">Gene Boggs</a>
+</div>
+</div>
 </body>
 </html>
