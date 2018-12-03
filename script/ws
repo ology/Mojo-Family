@@ -9,7 +9,6 @@ use WS::Model::Users;
 app->secrets(['I am the walrus']);
 
 # Fix static paths
-pop @{app->static->paths};
 push @{app->static->paths}, $ENV{HOME} . '/sandbox/Mojo-Family/public',
                             $ENV{HOME} . '/sandbox/Mojo-Family/public/css';
 
