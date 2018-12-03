@@ -6,7 +6,7 @@ use lib 'lib';
 use WS::Model::Users;
 
 # Make signed cookies tamper resistant
-app->secrets(['Mojolicious rocks']);
+app->secrets(['I am the walrus']);
 
 # Fix static paths
 pop @{app->static->paths};
