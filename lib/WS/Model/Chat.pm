@@ -6,6 +6,7 @@ use warnings;
 use DateTime;
 use Encoding::FixLatin qw( fix_latin );
 use IO::All -utf8;
+use URL::Search qw( partition_urls );
 
 sub new { bless {}, shift }
 
@@ -56,6 +57,35 @@ sub format {
 
     return sprintf '<b>%s</b> <span class="smallstamp">%s:</span> %s',
         $who, $now, $text;
+}
+
+sub add {
+    my ( $self, $file, $who, $tz, $text ) = @_;
+
+    # Trim the text
+    $text =~ s/^\s*//;
+    $text =~ s/\s*$//;
+
+    # Fix newlines
+    $text =~ s/\n/<br>/g;
+
+    my $now = DateTime->now( time_zone => $tz )->ymd
+        . ' ' . DateTime->now( time_zone => $tz )->hms;
+
+    my $html = '';
+    for my $part ( partition_urls $text ) {
+        my ( $type, $str ) = @$part;
+        if ( $type eq 'URL' ) {
+            $html .= qq|<a href="$str" target="_blank">$str</a>|;
+        } else {
+            $html .= $str;
+        }
+    }
+    $text = $html;
+
+    $text = sprintf '%s %s: %s', $who, $now, $text;
+
+    "$text\n" >> io($file);
 }
 
 1;

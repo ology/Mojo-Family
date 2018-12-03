@@ -35,6 +35,10 @@ websocket '/echo' => sub {
     $c->on(json => sub {
         my ($ctrl, $hash) = @_;
 
+        $ctrl->chat->add(
+            $CHATFILE, $ctrl->session('user'), 'America/Los_Angeles', $hash->{msg}
+        );
+
         $hash->{msg} = $ctrl->chat->format(
             $ctrl->session('user'), 'America/Los_Angeles', $hash->{msg}
         );
@@ -125,7 +129,7 @@ __DATA__
 <div class="row">
     <div class="nine columns">
         <div name="data" id="data">
-% for my $line ( reverse @$lines ) {
+% for my $line ( @$lines ) {
             <p><%== $line %></p>
 % }
         </div>
