@@ -7,13 +7,16 @@ use lib 'lib';
 use WS::Model::Users;
 use WS::Model::Chat;
 
+my $CWD = cwd();
+
+my $CHATFILE = $CWD . '/chat.txt';
+
 # Make signed cookies tamper resistant
 app->secrets(['I am the walrus']);
 
 # Fix static paths
-my $cwd = cwd();
-push @{app->static->paths}, $cwd . '/public',
-                            $cwd . '/public/css';
+push @{app->static->paths}, $CWD . '/public',
+                            $CWD . '/public/css';
 
 # Helpers to lazy initialize and store model objects
 helper users => sub { state $users = WS::Model::Users->new };
@@ -72,7 +75,7 @@ group {
     get '/chat' => sub {
         my $c = shift;
 
-        my $lines = $c->chat->lines();
+        my $lines = $c->chat->lines($CHATFILE);
 
         $c->stash(lines => $lines);
     };
