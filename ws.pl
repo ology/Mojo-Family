@@ -93,6 +93,9 @@ group {
 
         my $events = $c->calendar->events($DB, app->config->{timezone});
         $c->stash(events => $events);
+
+        my $important = $c->calendar->important($DB, app->config->{timezone});
+        $c->stash(important => $important);
     };
 };
 
@@ -148,6 +151,13 @@ __DATA__
 %= tag 'br'
         <ul class="event">
 % for my $event ( @$events ) {
+            <p><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %></p>
+% }
+        </ul>
+        <b>This year:</b>
+%= tag 'br'
+        <ul class="event">
+% for my $event ( @$important ) {
             <p><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %></p>
 % }
         </ul>
