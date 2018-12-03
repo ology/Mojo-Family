@@ -133,7 +133,7 @@ __DATA__
 % my $placeholder = "What's on your mind, " . $c->session('user') . '?';
 % layout 'default', title => 'Family Chat';
 <div class="container">
-<h1><%= title %></h1>
+%= include 'header', title => 'Family Chat';
 %= text_area 'chat', name => 'text', class => 'chat', id => 'chat', placeholder => $placeholder
 %= tag 'br'
 %= submit_button 'submit', name => 'submit', value => 'Chat', id => 'submit', class => 'button-primary'
@@ -179,6 +179,30 @@ __DATA__
     });
 </script>
 </div>
+
+
+@@ header.html.ep
+<div class="row">
+    <div class="three columns">
+        <h4><b><i><%= title %>!</i></b></h4>
+    </div>
+    <div class="nine columns btnright">
+        <b><a class="button" href="/addressbook">Addresses</a></b>
+        <b><a class="button" href="/album">Album</a></b>
+        <b><a class="button" href="/calendar">Calendar</a></b>
+        <b><a class="button" href="/">Chat</a></b>
+        <b><a class="button" href="/cookbook">Cookbook</a></b>
+% if ( title eq 'History' || title eq 'Ban' || title eq 'Email' || title eq 'Log' || title eq 'Users' || title eq 'Messages' ) {
+        <b><a class="button" href="/ban">Bans</a></b>
+        <b><a class="button" href="/history">History</a></b>
+        <b><a class="button" href="/log">Log</a></b>
+        <b><a class="button" href="/messages">Messages</a></b>
+        <b><a class="button" href="/users">Users</a></b>
+% }
+        <b><a class="button" href="/logout">Logout</a></b>
+    </div>
+</div>
+
 
 
 @@ layouts/default.html.ep
