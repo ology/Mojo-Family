@@ -22,6 +22,8 @@ my $clients = {};
 websocket '/echo' => sub {
     my $c = shift;
 
+    $c->inactivity_timeout(86400);
+
     my $id = sprintf '%s', $c->tx;
     $clients->{$id} = $c->tx;
 
@@ -82,7 +84,9 @@ get '/logout' => sub {
     $c->redirect_to('index');
 };
 
-any '/chat';
+any '/chat' => sub {
+    my $c = shift;
+};
 
 app->start;
 __DATA__
