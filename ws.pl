@@ -86,7 +86,6 @@ group {
         return undef;
     };
 
-    # A protected page
     get '/chat' => sub {
         my $c = shift;
 
@@ -108,7 +107,6 @@ group {
     };
 };
 
-# Logout action
 get '/logout' => sub {
     my $c = shift;
 
