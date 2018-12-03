@@ -1,7 +1,6 @@
 #!/usr/bin/env perl
 
 use Mojolicious::Lite;
-use Mojo::Template;
 
 use lib 'lib';
 use WS::Model::Users;
@@ -11,8 +10,8 @@ app->secrets(['Mojolicious rocks']);
 
 # Fix static paths
 pop @{app->static->paths};
-push @{app->static->paths} => '/Users/gene/sandbox/Mojo-Family/public',
-                              '/Users/gene/sandbox/Mojo-Family/public/css';
+push @{app->static->paths}, $ENV{HOME} . '/sandbox/Mojo-Family/public',
+                            $ENV{HOME} . '/sandbox/Mojo-Family/public/css';
 
 # Helper to lazy initialize and store our model object
 helper users => sub { state $users = WS::Model::Users->new };
