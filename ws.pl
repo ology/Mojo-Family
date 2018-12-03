@@ -103,6 +103,8 @@ group {
     get '/calendar' => sub {
         my $c = shift;
         $c->stash(method => 'Add');
+#        $c->stash(event => { id => 42, title => 'Foo!', month => 1, day => 2, note => 'Hello?' });
+        $c->stash(event => {});
     };
 };
 
@@ -205,15 +207,15 @@ __DATA__
 <div class="container">
 %= include 'header', title => 'Calendar';
 %= form_for calendar => (method => 'POST') => begin
-    %= text_field 'event_title', size => 20, maxlength => 20, placeholder => 'Title'
+    %= text_field 'event_title' => $event->{title}, size => 20, maxlength => 20, placeholder => 'Title'
     Month:
-    %= number_field 'event_month', size => 2, maxlength => 2, min => 1, max => 12, placeholder => '##'
+    %= text_field 'event_month' => $event->{month}, size => 2, maxlength => 2, placeholder => '##'
     Day:
-    %= number_field 'event_day', size => 2, maxlength => 2, min => 1, max => 31, placeholder => '##'
+    %= text_field 'event_day' => $event->{day}, size => 2, maxlength => 2, placeholder => '##'
     %= tag 'br'
-    %= text_field 'event_note', size => 50, maxlength => 90, placeholder => 'Notes'
+    %= text_field 'event_note' => $event->{note}, size => 50, maxlength => 90, placeholder => 'Notes'
     &nbsp;&nbsp;Sticky:
-    %= check_box 'event_sticky'
+    %= check_box 'event_sticky' => $event->{sticky}
 % if ( $method eq 'Add' ) {
     &nbsp;&nbsp;Notify chat:
     %= check_box 'event_notify'
@@ -221,7 +223,7 @@ __DATA__
     %= submit_button $method, name => $method, id => $method, class => 'button-primary'
 % } else {
     %= tag 'br'
-    %= hidden_field 'id'
+    %= hidden_field 'id' => $event->{id}
     %= submit_button $method, name => $method, id => $method, class => 'button-primary'
     &nbsp;
     %= submit_button 'Delete', name => 'Delete', id => 'Delete', class => 'button-primary'
