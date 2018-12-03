@@ -84,10 +84,6 @@ get '/logout' => sub {
     $c->redirect_to('index');
 };
 
-any '/chat' => sub {
-    my $c = shift;
-};
-
 app->start;
 __DATA__
 
