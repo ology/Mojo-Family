@@ -6,6 +6,7 @@ use Mojolicious::Lite;
 use lib 'lib';
 use WS::Model::Users;
 use WS::Model::Chat;
+use WS::Model::Calendar;
 
 plugin 'Config';
 
@@ -23,6 +24,7 @@ push @{app->static->paths}, $CWD . '/public',
 # Helpers to lazy initialize and store model objects
 helper users => sub { state $users = WS::Model::Users->new };
 helper chat => sub { state $chat = WS::Model::Chat->new };
+helper calendar => sub { state $calendar = WS::Model::Calendar->new };
  
 my $clients = {};
 
@@ -84,8 +86,10 @@ group {
         my $c = shift;
 
         my $lines = $c->chat->lines($CHATFILE);
-
         $c->stash(lines => $lines);
+
+        my $events = $c->calendar->events(app->config->{timezone});
+        $c->stash(events => $events);
     };
 };
 
@@ -140,6 +144,9 @@ __DATA__
         <b>This month:</b>
 %= tag 'br'
         <ul class="event">
+% for my $event ( @$events ) {
+            <p><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %></p>
+% }
         </ul>
     </div>
 </div>
