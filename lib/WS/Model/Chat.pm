@@ -3,6 +3,7 @@ package WS::Model::Chat;
 use strict;
 use warnings;
 
+use DateTime;
 use Encoding::FixLatin qw( fix_latin );
 use IO::All -utf8;
 
@@ -37,6 +38,24 @@ sub lines {
     }
 
     return \@content;
+}
+
+sub format {
+    my ( $self, $who, $tz, $text ) = @_;
+
+    $text = fix_latin($text);
+
+    # Trim the text
+    $text =~ s/^\s*//;
+    $text =~ s/\s*$//;
+
+    $text =~ s/\n/<br>/g;
+
+    my $now = DateTime->now( time_zone => $tz )->ymd
+        . ' ' . DateTime->now( time_zone => $tz )->hms;
+
+    return sprintf '<b>%s</b> <span class="smallstamp">%s:</span> %s',
+        $who, $now, $text;
 }
 
 1;
