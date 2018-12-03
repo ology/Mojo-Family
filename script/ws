@@ -1,19 +1,18 @@
 #!/usr/bin/env perl
 
+use Cwd;
 use Mojolicious::Lite;
 
 use lib 'lib';
 use WS::Model::Users;
 
-use FindBin qw($Bin);
-use lib "$Bin/../lib";
-
 # Make signed cookies tamper resistant
 app->secrets(['I am the walrus']);
 
 # Fix static paths
-push @{app->static->paths}, $Bin . '/../public',
-                            $Bin . '/../public/css';
+my $cwd = cwd();
+push @{app->static->paths}, $cwd . '/public',
+                            $cwd . '/public/css';
 
 # Helper to lazy initialize and store our model object
 helper users => sub { state $users = WS::Model::Users->new };
