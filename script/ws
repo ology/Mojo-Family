@@ -11,6 +11,8 @@ my $CWD = cwd();
 
 my $CHATFILE = $CWD . '/chat.txt';
 
+my $config = plugin 'Config';
+
 # Make signed cookies tamper resistant
 app->secrets(['I am the walrus']);
 
@@ -36,11 +38,11 @@ websocket '/echo' => sub {
         my ($ctrl, $hash) = @_;
 
         $ctrl->chat->add(
-            $CHATFILE, $ctrl->session('user'), 'America/Los_Angeles', $hash->{msg}
+            $CHATFILE, $ctrl->session('user'), $config->{timezone}, $hash->{msg}
         );
 
         $hash->{msg} = $ctrl->chat->format(
-            $ctrl->session('user'), 'America/Los_Angeles', $hash->{msg}
+            $ctrl->session('user'), $config->{timezone}, $hash->{msg}
         );
 
         for (keys %$clients) {
