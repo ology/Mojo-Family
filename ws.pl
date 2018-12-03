@@ -154,13 +154,15 @@ __DATA__
             <p><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %></p>
 % }
         </ul>
+% if ( @$important ) {
         <b>This year:</b>
 %= tag 'br'
         <ul class="event">
-% for my $event ( @$important ) {
+%   for my $event ( @$important ) {
             <p><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %></p>
-% }
+%   }
         </ul>
+% }
     </div>
 </div>
 <script>
