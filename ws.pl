@@ -99,6 +99,10 @@ group {
         my $important = $c->calendar->important($DB, app->config->{timezone});
         $c->stash(important => $important);
     };
+
+    get '/calendar' => sub {
+        my $c = shift;
+    };
 };
 
 # Logout action
@@ -138,7 +142,7 @@ __DATA__
 %= include 'header', title => 'Family Chat';
 %= text_area 'chat', name => 'text', class => 'chat', id => 'chat', placeholder => $placeholder
 %= tag 'br'
-%= submit_button 'submit', name => 'submit', value => 'Chat', id => 'submit', class => 'button-primary'
+%= submit_button 'Chat', name => 'submit', id => 'submit', class => 'button-primary'
 %= tag 'br'
 <div class="row">
     <div class="nine columns">
@@ -192,6 +196,18 @@ __DATA__
         }
     });
 </script>
+</div>
+
+
+@@ calendar.html.ep
+% layout 'default', title => 'Calendar';
+<div class="container">
+%= include 'header', title => 'Calendar';
+%= form_for calendar => begin
+    %= text_field 'event_title', placeholder => 'Title'
+    %= tag 'br'
+    %= submit_button 'Add', name => 'submit', id => 'submit', class => 'button-primary'
+% end
 </div>
 
 
