@@ -151,7 +151,12 @@ __DATA__
 %= tag 'br'
         <ul class="event">
 % for my $event ( @$events ) {
-            <p><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %></p>
+            <li><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %>
+%       if ( $event->{note} ) {
+%= tag 'br'
+                &nbsp;&nbsp;&nbsp;&nbsp; <span class="event_note"><%= $event->{note} %></span>
+%       }
+                </li>
 % }
         </ul>
 % if ( @$important ) {
@@ -159,7 +164,12 @@ __DATA__
 %= tag 'br'
         <ul class="event">
 %   for my $event ( @$important ) {
-            <p><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %></p>
+            <li><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %>
+%       if ( $event->{note} ) {
+%= tag 'br'
+                &nbsp;&nbsp;&nbsp;&nbsp; <span class="event_note"><%= $event->{note} %></span>
+%       }
+                </li>
 %   }
         </ul>
 % }

@@ -18,6 +18,7 @@ sub events {
             month => $next->{month},
             day   => $next->{day},
             title => $next->{title},
+            note  => $next->{note},
         };
     }
 
@@ -37,6 +38,7 @@ sub important {
             month => $next->{month},
             day   => $next->{day},
             title => $next->{title},
+            note  => $next->{note},
         };
     }
 
