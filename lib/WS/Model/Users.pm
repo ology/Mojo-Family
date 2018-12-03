@@ -4,15 +4,12 @@ use strict;
 use warnings;
 
 use Crypt::SaltedHash;
-use Mojo::mysql;
 
 sub new { bless {}, shift }
 
 sub check {
-    my ($self, $user, $pass) = @_;
+    my ($self, $db, $user, $pass) = @_;
 
-    my $mysql = Mojo::mysql->strict_mode('mysql://root:abc123@localhost/example_family');
-    my $db = $mysql->db;
     my $entry = $db->query('SELECT * FROM user WHERE username = ?', $user);
 
     my $password;

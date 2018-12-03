@@ -2,6 +2,7 @@
 
 use Cwd;
 use Mojolicious::Lite;
+use Mojo::mysql;
 
 use lib 'lib';
 use WS::Model::Users;
@@ -13,6 +14,8 @@ plugin 'Config';
 my $CWD = cwd();
 
 my $CHATFILE = $CWD . '/chat.txt';
+
+my $DB = Mojo::mysql->strict_mode('mysql://root:abc123@localhost/example_family')->db;
 
 # Make signed cookies tamper resistant
 app->secrets(['I am the walrus']);
@@ -62,7 +65,7 @@ any '/' => sub {
 
     # Check password
     return $c->render
-        unless $c->users->check($user, $pass);
+        unless $c->users->check($DB, $user, $pass);
 
     # Store username in session
     $c->session(user => $user);
@@ -88,7 +91,7 @@ group {
         my $lines = $c->chat->lines($CHATFILE);
         $c->stash(lines => $lines);
 
-        my $events = $c->calendar->events(app->config->{timezone});
+        my $events = $c->calendar->events($DB, app->config->{timezone});
         $c->stash(events => $events);
     };
 };
