@@ -7,11 +7,11 @@ use lib 'lib';
 use WS::Model::Users;
 use WS::Model::Chat;
 
+plugin 'Config';
+
 my $CWD = cwd();
 
 my $CHATFILE = $CWD . '/chat.txt';
-
-plugin 'Config';
 
 # Make signed cookies tamper resistant
 app->secrets(['I am the walrus']);
