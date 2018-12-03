@@ -15,7 +15,9 @@ my $CWD = cwd();
 
 my $CHATFILE = $CWD . '/chat.txt';
 
-my $DB = Mojo::mysql->strict_mode('mysql://root:abc123@localhost/example_family')->db;
+my $DB = Mojo::mysql->strict_mode(
+    sprintf 'mysql://%s:%s@%s/%s', app->config->{dbuser}, app->config->{dbpass}, app->config->{dbhost}, app->config->{dbname}
+)->db;
 
 # Make signed cookies tamper resistant
 app->secrets(['I am the walrus']);
