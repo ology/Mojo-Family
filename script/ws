@@ -5,6 +5,7 @@ use Mojolicious::Lite;
 
 use lib 'lib';
 use WS::Model::Users;
+use WS::Model::Chat;
 
 # Make signed cookies tamper resistant
 app->secrets(['I am the walrus']);
@@ -14,8 +15,9 @@ my $cwd = cwd();
 push @{app->static->paths}, $cwd . '/public',
                             $cwd . '/public/css';
 
-# Helper to lazy initialize and store our model object
+# Helpers to lazy initialize and store model objects
 helper users => sub { state $users = WS::Model::Users->new };
+helper chat => sub { state $chat = WS::Model::Chat->new };
  
 my $clients = {};
 
@@ -70,9 +72,9 @@ group {
     get '/chat' => sub {
         my $c = shift;
 
-        my @lines = ('I like pie.', 'I want a pony!');
+        my $lines = $c->chat->lines();
 
-        $c->stash(lines => \@lines);
+        $c->stash(lines => $lines);
     };
 };
 
@@ -118,7 +120,7 @@ __DATA__
 <div class="row">
     <div class="nine columns">
         <div name="data" id="data">
-% for my $line ( @$lines ) {
+% for my $line ( reverse @$lines ) {
             <p><%= $line %></p>
 % }
         </div>
