@@ -67,7 +67,13 @@ group {
     };
 
     # A protected page
-    get '/chat';
+    get '/chat' => sub {
+        my $c = shift;
+
+        my @lines = ('I like pie.', 'I want a pony!');
+
+        $c->stash(lines => \@lines);
+    };
 };
 
 # Logout action
@@ -111,7 +117,11 @@ __DATA__
 %= tag 'br'
 <div class="row">
     <div class="nine columns">
-%= tag 'div', name => 'data', id => 'data'
+        <div name="data" id="data">
+% for my $line ( @$lines ) {
+            <p><%= $line %></p>
+% }
+        </div>
     </div>
     <div class="three columns">
         <b>This month:</b>
@@ -123,7 +133,7 @@ __DATA__
 <script>
     var ws = new WebSocket('<%= url_for('echo')->to_abs %>');
     ws.onmessage = function (event) {
-        $('#data').append('<p>' + JSON.parse(event.data).msg + '</p>');
+        $('#data').prepend('<p>' + JSON.parse(event.data).msg + '</p>');
     };
     ws.onopen = function (event) {
         console.log('ws.onopen');
