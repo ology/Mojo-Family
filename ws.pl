@@ -101,9 +101,23 @@ group {
 
     get '/calendar' => sub {
         my $c = shift;
-        $c->stash(method => 'Add');
-#        $c->stash(event => { id => 42, title => 'Foo!', month => 1, day => 2, note => 'Hello?' });
-        $c->stash(event => {});
+
+        my $id = $c->param('id');
+
+        my $event;
+        if ( $id ) {
+            $c->stash(method => 'Update');
+            my $events = $c->calendar->events($DB, app->config->{timezone}, $id);
+            $event = $events->[0] if $events;
+        }
+        else {
+            $c->stash(method => 'Add');
+            $event = {};
+        }
+        $c->stash(event => $event);
+
+        my $events = $c->calendar->events($DB, app->config->{timezone});
+        $c->stash(events => $events);
     };
 };
 
@@ -229,6 +243,17 @@ __DATA__
     %= link_to Cancel => 'calendar', class => 'button'
 % }
 % end
+<ol>
+% for my $event ( @$events ) {
+            <li>
+                <a href="/calendar?id=<%= $event->{id} %>"><%= $event->{month} %>/<%= $event->{day} %></a> - <%= $event->{title} %>
+%       if ( $event->{note} ) {
+%= tag 'br'
+                &nbsp;&nbsp;&nbsp;&nbsp; <span class="event_note"><%= $event->{note} %></span>
+%       }
+                </li>
+% }
+</ol>
 </div>
 
 

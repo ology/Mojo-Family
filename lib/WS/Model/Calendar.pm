@@ -6,15 +6,19 @@ use warnings;
 sub new { bless {}, shift }
 
 sub events {
-    my ( $self, $db, $tz ) = @_;
+    my ( $self, $db, $tz, $id ) = @_;
 
-    my $month = DateTime->now( time_zone => $tz )->month;
+    my $param = $id ? $id : DateTime->now( time_zone => $tz )->month;
 
-    my $entries = $db->query('SELECT * FROM calendar WHERE month = ?', $month);
+    my $sql = 'SELECT * FROM calendar WHERE ';
+    $sql .= $id ? 'id = ?' : 'month = ?';
+
+    my $entries = $db->query($sql, $param);
 
     my @events;
     while ( my $next = $entries->hash ) {
         push @events, {
+            id    => $next->{id},
             month => $next->{month},
             day   => $next->{day},
             title => $next->{title},
@@ -35,6 +39,7 @@ sub important {
     my @events;
     while ( my $next = $entries->hash ) {
         push @events, {
+            id    => $next->{id},
             month => $next->{month},
             day   => $next->{day},
             title => $next->{title},
