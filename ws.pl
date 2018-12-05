@@ -317,6 +317,13 @@ __DATA__
 </div>
 
 
+@@ exception.development.html.ep
+% layout 'default', title => 'Error';
+<div class="container">
+%= include 'header', title => 'Error';
+<p><%= $exception->message %></p>
+</div>
+
 
 @@ layouts/default.html.ep
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
