@@ -119,6 +119,43 @@ group {
         my $events = $c->calendar->events($DB, app->config->{timezone});
         $c->stash(events => $events);
     };
+
+    post '/calendar' => sub {
+        my $c = shift;
+
+        my $method = $c->param('Add') || $c->param('Update') || $c->param('Delete');
+
+        if ( $method eq 'Add' ) {
+            $c->calendar->add(
+                db     => $DB,
+                title  => $c->param('event_title'),
+                month  => $c->param('event_month'),
+                day    => $c->param('event_day'),
+                note   => $c->param('event_note'),
+                sticky => $c->param('event_sticky'),
+            );
+        }
+#        elsif ( $method eq 'Update' ) {
+#            $c->calendar->update(
+#                db     => $DB,
+#                id     => $c->param('id'),
+#                title  => $c->param('event_title'),
+#                month  => $c->param('event_month'),
+#                day    => $c->param('event_day'),
+#                note   => $c->param('event_note'),
+#                sticky => $c->param('event_sticky'),
+#            );
+#        }
+#        elsif ( $method eq 'Delete' ) {
+#            $c->calendar->delete(
+#                db => $DB,
+#                id => $c->param('id'),
+#            );
+#        }
+
+        $c->stash(method => 'Add');
+        $c->stash(month => $c->param('event_month'));
+    };
 };
 
 get '/logout' => sub {

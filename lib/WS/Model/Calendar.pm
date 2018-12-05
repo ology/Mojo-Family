@@ -50,4 +50,15 @@ sub important {
     return \@events;
 }
 
+sub add {
+    my ( $self, %args ) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{month} && $args{day} && $args{title};
+
+    $args{db}->query(
+        'INSERT INTO calendar (title, month, day, note) VALUES (?,?,?,?)',
+        $args{title}, $args{month}, $args{day}, $args{note}
+    );
+}
+
 1;
