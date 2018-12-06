@@ -256,12 +256,30 @@ __DATA__
 % layout 'default', title => 'Calendar';
 <div class="container">
 %= include 'header', title => 'Calendar';
+<div class="row">
+    <div class="nine columns">
 %= form_for calendar => (method => 'POST') => begin
     %= text_field 'event_title' => $event->{title}, size => 20, maxlength => 20, placeholder => 'Title'
     Month:
-    %= text_field 'event_month' => $event->{month}, size => 2, maxlength => 2, placeholder => '##'
+    <select name="event_month">
+% for my $i ( 1 .. 12 ) {
+        <option value="<%= $i %>"
+%   if ( $i == $event->{month} ) {
+            selected
+%   }
+><%= $i %></option>
+% }
+    </select>
     Day:
-    %= text_field 'event_day' => $event->{day}, size => 2, maxlength => 2, placeholder => '##'
+    <select name="event_day">
+% for my $i ( 1 .. 31 ) {
+        <option value="<%= $i %>"
+%   if ( $i == $event->{day} ) {
+            selected
+%   }
+><%= $i %></option>
+% }
+    </select>
     %= tag 'br'
     %= text_field 'event_note' => $event->{note}, size => 50, maxlength => 90, placeholder => 'Notes'
     &nbsp;&nbsp;Sticky:
@@ -283,6 +301,8 @@ __DATA__
     %= link_to Cancel => 'calendar', class => 'button'
 % }
 % end
+    </div>
+</div>
 <ol>
 % for my $event ( @$events ) {
             <li>
