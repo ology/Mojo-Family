@@ -148,12 +148,12 @@ group {
                 sticky => $c->param('event_sticky'),
             );
         }
-#        elsif ( $method eq 'Delete' ) {
-#            $c->calendar->delete(
-#                db => $DB,
-#                id => $c->param('id'),
-#            );
-#        }
+        elsif ( $method eq 'Delete' ) {
+            $c->calendar->delete(
+                db => $DB,
+                id => $c->param('id'),
+            );
+        }
 
         $c->redirect_to('/calendar?month=' . $c->param('event_month'));
     };

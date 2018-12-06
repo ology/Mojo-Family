@@ -76,4 +76,12 @@ sub update {
     );
 }
 
+sub delete {
+    my ( $self, %args ) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{id};
+
+    $args{db}->query( 'DELETE FROM calendar WHERE id = ?', $args{id} );
+}
+
 1;
