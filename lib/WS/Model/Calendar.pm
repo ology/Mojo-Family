@@ -10,7 +10,9 @@ sub new { bless {}, shift }
 sub events {
     my ( $self, $db, $tz, $id, $month ) = @_;
 
-    my $param = $id ? $id : $month ? $month : DateTime->now( time_zone => $tz )->month;
+    $month ||= DateTime->now( time_zone => $tz )->month;
+
+    my $param = $id ? $id : $month;
 
     my $sql = 'SELECT * FROM calendar WHERE ';
     $sql .= $id ? 'id = ?' : 'month = ?';

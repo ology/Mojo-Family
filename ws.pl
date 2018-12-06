@@ -119,6 +119,7 @@ group {
 
         my $events = $c->calendar->events($DB, app->config->{timezone}, undef, $month);
         $c->stash(events => $events);
+        $c->stash(month => $month);
     };
 
     post '/calendar' => sub {
@@ -154,7 +155,7 @@ group {
 #            );
 #        }
 
-        $c->stash(method => 'Add');
+        $c->redirect_to('/calendar?month=' . $c->param('event_month'));
     };
 };
 
@@ -274,6 +275,7 @@ __DATA__
 % } else {
     %= tag 'br'
     %= hidden_field 'id' => $event->{id}
+    %= hidden_field 'month' => $event->{month}
     %= submit_button $method, name => $method, id => $method, class => 'button-primary'
     &nbsp;
     %= submit_button 'Delete', name => 'Delete', id => 'Delete', class => 'button-primary'
