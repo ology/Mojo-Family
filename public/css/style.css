@@ -1,0 +1,120 @@
+body {
+//    background-color: #F1EDD3;
+    background-color: #f6f6ef;
+}
+
+h1, h2, h3, h4, h5 {
+    text-shadow: 2px 2px 1px #F1EDD3;
+    padding: 5px 0px 0px 5px;
+}
+
+div.btnright {
+    text-align: right;
+    padding-top: 5px;
+}
+
+div.img {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 180px;
+}
+div.img:hover {
+    border: 1px solid #777;
+}
+div.img img {
+    width: 100%;
+    height: auto;
+}
+div.desc {
+    text-align: center;
+}
+
+div.data {
+    padding-left: 10px;
+}
+
+p.center {
+    text-align: center;
+}
+
+span.smallstamp {
+    font-size: 10px
+}
+
+textarea.chat {
+    width: 100%;
+}
+
+ul.event {
+    list-style: none;
+    padding-left: 0;
+}
+
+.event_note {
+    font-size: small;
+}
+
+div.event {
+//    padding-top: 10px;
+    padding-left: 20px;
+    text-align: left;
+}
+
+form.album {
+    display: inline;
+    margin: 0;
+}
+
+form.block {
+    display: inline-block;
+}
+
+div.menu {
+    padding: 5px;
+    text-align: right;
+}
+
+img.vmid {
+    vertical-align: middle;
+}
+
+div.brown {
+    background-color: #D7D3B9;
+}
+
+div.leftpad {
+    text-align: left;
+    padding-left: 10px;
+    font-size: small;
+}
+
+div.centerpad {
+    text-align: center;
+    font-size: small;
+}
+
+div.rightpad {
+    text-align: right;
+    padding-right: 10px;
+    font-size: small;
+}
+
+a:link {
+    text-decoration: none;
+}
+a:visited {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:active {
+    text-decoration: underline;
+}
+
+div.flashmsg {
+    background: #CEE5F5;
+    padding: 0.5em;
+    border: 1px solid #AACBE2;
+}
