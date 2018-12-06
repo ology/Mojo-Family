@@ -84,27 +84,4 @@ sub delete {
     $args{db}->query( 'DELETE FROM calendar WHERE id = ?', $args{id} );
 }
 
-sub prev_next {
-    my ($self, $tz, $month) = @_;
-
-    my $now = DateTime->now( time_zone => $tz );
-
-    $month ||= $now->month;
-
-    if ( $month <= $now->month ) {
-        my $diff = $now->month - $month + 1;
-
-        my $prev = $now->clone;
-        return $prev->subtract( months => $diff )->month,
-            $prev->add( months => 2 )->month;
-    }
-    else {
-        my $diff = $month - $now->month;
-        my $next = $now->clone->add( months => $diff + 1 );
-        my $next_month = $next->month;
-        return $next->subtract( months => 2 )->month,
-            $next_month;
-    }
-}
-
 1;

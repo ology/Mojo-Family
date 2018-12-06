@@ -120,10 +120,6 @@ group {
         my $events = $c->calendar->events($DB, app->config->{timezone}, undef, $month);
         $c->stash(events => $events);
         $c->stash(month => $month);
-
-        my ($prev_month, $next_month) = $c->calendar->prev_next(app->config->{timezone}, $month);
-        $c->stash(prev_month => $prev_month);
-        $c->stash(next_month => $next_month);
     };
 
     post '/calendar' => sub {
@@ -261,7 +257,7 @@ __DATA__
 <div class="container">
 %= include 'header', title => 'Calendar';
 <div class="row">
-    <div class="nine columns">
+    <div class="eight columns">
 %= form_for calendar => (method => 'POST') => begin
     %= text_field 'event_title' => $event->{title}, size => 20, maxlength => 20, placeholder => 'Title'
     Month:
@@ -306,7 +302,7 @@ __DATA__
 % }
 % end
     </div>
-    <div class="three columns rightpad">
+    <div class="four columns rightpad">
 %= form_for calendar => (method => 'GET') => begin
     Goto:
     <select name="month" onchange="this.form.submit()">
