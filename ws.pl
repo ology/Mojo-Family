@@ -264,7 +264,7 @@ __DATA__
     <select name="event_month">
 % for my $i ( 1 .. 12 ) {
         <option value="<%= $i %>"
-%   if ( $i == $event->{month} ) {
+%   if ( $event->{month} && $i == $event->{month} ) {
             selected
 %   }
 ><%= $i %></option>
@@ -274,7 +274,7 @@ __DATA__
     <select name="event_day">
 % for my $i ( 1 .. 31 ) {
         <option value="<%= $i %>"
-%   if ( $i == $event->{day} ) {
+%   if ( $event->{day} && $i == $event->{day} ) {
             selected
 %   }
 ><%= $i %></option>
@@ -301,6 +301,20 @@ __DATA__
     %= link_to Cancel => 'calendar', class => 'button'
 % }
 % end
+    </div>
+    <div class="three columns rightpad">
+%= form_for calendar => (method => 'GET') => begin
+    Goto:
+    <select name="month" onchange="this.form.submit()">
+% for my $i ( 1 .. 12 ) {
+        <option value="<%= $i %>"
+%   if ( $month && $i == $month ) {
+            selected
+%   }
+><%= $i %></option>
+% }
+    </select>
+%= end
     </div>
 </div>
 <ol>
