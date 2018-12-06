@@ -103,6 +103,7 @@ group {
         my $c = shift;
 
         my $id = $c->param('id');
+        my $month = $c->param('month');
 
         my $event;
         if ( $id ) {
@@ -116,7 +117,7 @@ group {
         }
         $c->stash(event => $event);
 
-        my $events = $c->calendar->events($DB, app->config->{timezone});
+        my $events = $c->calendar->events($DB, app->config->{timezone}, undef, $month);
         $c->stash(events => $events);
     };
 
@@ -154,7 +155,6 @@ group {
 #        }
 
         $c->stash(method => 'Add');
-        $c->stash(month => $c->param('event_month'));
     };
 };
 
@@ -191,7 +191,7 @@ __DATA__
 % my $placeholder = "What's on your mind, " . $c->session('user') . '?';
 % layout 'default', title => 'Family Chat';
 <div class="container">
-%= include 'header', title => 'Family Chat';
+%= include 'header', title => 'Family Chat', month => 1;
 %= text_area 'chat', name => 'text', class => 'chat', id => 'chat', placeholder => $placeholder
 %= tag 'br'
 %= submit_button 'Chat', name => 'submit', id => 'submit', class => 'button-primary'
@@ -270,6 +270,7 @@ __DATA__
     %= check_box 'event_notify'
     %= tag 'br'
     %= submit_button $method, name => $method, id => $method, class => 'button-primary'
+    <input type="reset" name="reset" value="reset" class="button" />
 % } else {
     %= tag 'br'
     %= hidden_field 'id' => $event->{id}
@@ -283,7 +284,7 @@ __DATA__
 <ol>
 % for my $event ( @$events ) {
             <li>
-                <a href="/calendar?id=<%= $event->{id} %>"><%= $event->{month} %>/<%= $event->{day} %></a> - <%= $event->{title} %>
+                <a href="/calendar?id=<%= $event->{id} %>&month=<%= $event->{month} %>"><%= $event->{month} %>/<%= $event->{day} %></a> - <%= $event->{title} %>
 %       if ( $event->{note} ) {
 %= tag 'br'
                 &nbsp;&nbsp;&nbsp;&nbsp; <span class="event_note"><%= $event->{note} %></span>
