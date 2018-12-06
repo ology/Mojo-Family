@@ -120,6 +120,10 @@ group {
         my $events = $c->calendar->events($DB, app->config->{timezone}, undef, $month);
         $c->stash(events => $events);
         $c->stash(month => $month);
+
+        my ($prev_month, $next_month) = $c->calendar->prev_next(app->config->{timezone}, $month);
+        $c->stash(prev_month => $prev_month);
+        $c->stash(next_month => $next_month);
     };
 
     post '/calendar' => sub {
@@ -315,6 +319,7 @@ __DATA__
 % }
     </select>
 %= end
+<p>Prev: <%= $prev_month %>, Next: <%= $next_month %></p>
     </div>
 </div>
 <ol>
