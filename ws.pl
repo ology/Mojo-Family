@@ -296,7 +296,7 @@ __DATA__
     %= hidden_field 'month' => $event->{month}
     %= submit_button $method, name => $method, id => $method, class => 'button-primary'
     &nbsp;
-    %= submit_button 'Delete', name => 'Delete', id => 'Delete', class => 'button-primary'
+    <input type="submit" name="Delete" value="Delete" id="Delete" class="button-primary" onclick="return confirm('Delete <%= $event->{title} %>?')" />
     &nbsp;
     %= link_to Cancel => 'calendar', class => 'button'
 % }
