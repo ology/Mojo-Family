@@ -315,7 +315,6 @@ __DATA__
 % }
     </select>
 %= end
-<p>Prev: <%= $prev_month %>, Next: <%= $next_month %></p>
     </div>
 </div>
 <ol>
