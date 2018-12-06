@@ -65,4 +65,15 @@ sub add {
     );
 }
 
+sub update {
+    my ( $self, %args ) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{month} && $args{day} && $args{title};
+
+    $args{db}->query(
+        'UPDATE calendar SET title=?, month=?, day=?, note=? WHERE id = ?',
+        $args{title}, $args{month}, $args{day}, $args{note}, $args{id}
+    );
+}
+
 1;

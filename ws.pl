@@ -137,17 +137,17 @@ group {
                 sticky => $c->param('event_sticky'),
             );
         }
-#        elsif ( $method eq 'Update' ) {
-#            $c->calendar->update(
-#                db     => $DB,
-#                id     => $c->param('id'),
-#                title  => $c->param('event_title'),
-#                month  => $c->param('event_month'),
-#                day    => $c->param('event_day'),
-#                note   => $c->param('event_note'),
-#                sticky => $c->param('event_sticky'),
-#            );
-#        }
+        elsif ( $method eq 'Update' ) {
+            $c->calendar->update(
+                db     => $DB,
+                id     => $c->param('id'),
+                title  => $c->param('event_title'),
+                month  => $c->param('event_month'),
+                day    => $c->param('event_day'),
+                note   => $c->param('event_note'),
+                sticky => $c->param('event_sticky'),
+            );
+        }
 #        elsif ( $method eq 'Delete' ) {
 #            $c->calendar->delete(
 #                db => $DB,
