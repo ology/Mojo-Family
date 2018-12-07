@@ -287,8 +287,6 @@ __DATA__
     &nbsp;&nbsp;Sticky:
     %= check_box 'event_sticky' => $event->{sticky}
 % if ( $method eq 'Add' ) {
-    &nbsp;&nbsp;Notify chat:
-    %= check_box 'event_notify'
     %= tag 'br'
     %= submit_button $method, name => $method, id => $method, class => 'button-primary'
     <input type="reset" name="reset" value="reset" class="button" />
