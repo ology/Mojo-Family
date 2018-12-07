@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use DateTime;
+use HTML::CalendarMonthSimple;
 
 sub new { bless {}, shift }
 
@@ -82,6 +83,15 @@ sub delete {
     die "Invalid entry\n" unless $args{db} && $args{id};
 
     $args{db}->query( 'DELETE FROM calendar WHERE id = ?', $args{id} );
+}
+
+sub cal {
+    my ($self, $db, $tz, $year, $month) = @_;
+
+    my $cal = HTML::CalendarMonthSimple->new( month => $month, year => $year );
+    $cal->border(1);
+
+    return $cal->as_HTML;
 }
 
 1;

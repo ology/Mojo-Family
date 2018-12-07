@@ -104,6 +104,7 @@ group {
 
         my $id = $c->param('id');
         my $month = $c->param('month');
+        my $year = $c->param('year');
 
         my $event;
         if ( $id ) {
@@ -120,6 +121,9 @@ group {
         my $events = $c->calendar->events($DB, app->config->{timezone}, undef, $month);
         $c->stash(events => $events);
         $c->stash(month => $month);
+
+        my $cal = $c->calendar->cal($DB, app->config->{timezone}, $year, $month);
+        $c->stash(cal => $cal);
     };
 
     post '/calendar' => sub {
@@ -314,9 +318,11 @@ __DATA__
 ><%= $i %></option>
 % }
     </select>
+    %= text_field 'year', size => 4, maxlength => 4, placeholder => 'Year'
 %= end
     </div>
 </div>
+<%== $cal %>
 <ol>
 % for my $event ( @$events ) {
             <li>
