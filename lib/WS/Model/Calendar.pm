@@ -89,7 +89,7 @@ sub cal {
     my ($self, $db, $tz, $year, $month) = @_;
 
     my $cal = HTML::CalendarMonthSimple->new( month => $month, year => $year );
-    $cal->border(1);
+    $cal->border(0);
 
     return $cal->as_HTML;
 }
