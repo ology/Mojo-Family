@@ -9,7 +9,6 @@ require "$FindBin::Bin/../ws.pl";
 my $t = Test::Mojo->new;
 $t->ua->max_redirects(1);
 
-# Test if the HTML login form exists
 $t->get_ok('/echo');
 #    ->send_ok('Is this thing on?')
 #    ->message_ok
