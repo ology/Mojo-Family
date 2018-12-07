@@ -308,6 +308,7 @@ __DATA__
 %= form_for calendar => (method => 'GET') => begin
     Goto:
     <select name="month" onchange="this.form.submit()">
+        <option value=""></option>
 % for my $i ( 1 .. 12 ) {
         <option value="<%= $i %>"
 %   if ( $month && $i == $month ) {
