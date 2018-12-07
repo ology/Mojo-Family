@@ -8,6 +8,7 @@ use lib 'lib';
 use WS::Model::Users;
 use WS::Model::Chat;
 use WS::Model::Calendar;
+use WS::Model::Address;
 
 plugin 'Config';
 
@@ -30,6 +31,7 @@ push @{app->static->paths}, $CWD . '/public',
 helper users => sub { state $users = WS::Model::Users->new };
 helper chat => sub { state $chat = WS::Model::Chat->new };
 helper calendar => sub { state $calendar = WS::Model::Calendar->new };
+helper address => sub { state $address = WS::Model::Address->new };
  
 my $clients = {};
 
@@ -158,6 +160,28 @@ group {
         }
 
         $c->redirect_to('/calendar?month=' . $c->param('event_month'));
+    };
+
+    get '/address' => sub {
+        my $c = shift;
+
+        my $id = $c->param('id');
+
+        my $addr;
+        if ( $id ) {
+            $c->stash(method => 'Update');
+            my $addrs = $c->address->addrs($DB, $id);
+            $addr = $addrs->[0] if $addrs;
+        }
+        else {
+            $c->stash(method => 'Add');
+            $addr = {};
+        }
+        $c->stash(addr => $addr);
+
+        my $addrs = $c->address->addrs($DB);
+        $c->stash(addrs => $addrs);
+
     };
 };
 

@@ -1,0 +1,60 @@
+% layout 'default', title => 'Address';
+<div class="container">
+%= include 'header', title => 'Address';
+<div class="row">
+    <div class="twelve columns">
+%= form_for address => (method => 'POST') => begin
+    %= text_field 'first_name' => $addr->{first_name}, size => 20, maxlength => 20, placeholder => 'First name'
+    %= text_field 'last_name' => $addr->{last_name}, size => 20, maxlength => 20, placeholder => 'Last name'
+    %= tag 'br'
+    %= text_field 'street' => $addr->{street}, size => 20, maxlength => 50, placeholder => 'Street'
+    %= text_field 'city' => $addr->{city}, size => 20, maxlength => 20, placeholder => 'City'
+    State:
+    %= text_field 'state' => $addr->{state}, size => 2, maxlength => 2, placeholder => '##'
+    %= text_field 'zip' => $addr->{zip}, size => 10, maxlength => 10, placeholder => 'Zip'
+    %= tag 'br'
+    %= text_field 'phone' => $addr->{phone}, size => 15, maxlength => 15, placeholder => 'Phone'
+    %= text_field 'phone2' => $addr->{phone2}, size => 15, maxlength => 15, placeholder => 'Phone2'
+    %= text_field 'email' => $addr->{email}, size => 40, maxlength => 50, placeholder => 'Email'
+    %= tag 'br'
+% if ( $method eq 'Add' ) {
+    %= submit_button $method, name => $method, id => $method, class => 'button-primary'
+    <input type="reset" name="reset" value="reset" class="button" />
+% } else {
+    %= hidden_field 'id' => $addr->{id}
+    %= submit_button $method, name => $method, id => $method, class => 'button-primary'
+    &nbsp;
+    <input type="submit" name="Delete" value="Delete" id="Delete" class="button-primary" onclick="return confirm('Delete <%= $addr->{first_name} %>?')" />
+    &nbsp;
+    %= link_to Cancel => 'address', class => 'button'
+% }
+% end
+    </div>
+</div>
+<table>
+    <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Street</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip</th>
+        <th>Phone</th>
+        <th>Phone2</th>
+        <th>Email</th>
+    </tr>
+% for my $row ( @$addrs ) {
+    <tr>
+        <td><a href="/address?id=<%= $row->{id} %>"><%== $row->{first_name} %></a></td>
+        <td><%== $row->{last_name} %></td>
+        <td><%== $row->{street} %></td>
+        <td><%== $row->{city} %></td>
+        <td><%== $row->{state} %></td>
+        <td><%== $row->{zip} %></td>
+        <td><a href="tel:<%== $row->{phone} %>"><%== $row->{phone} %></a></td>
+        <td><a href="tel:<%== $row->{phone2} %>"><%== $row->{phone2} %></a></td>
+        <td><a href="mailto:<%== $row->{email} %>"><%== $row->{email} %></a></td>
+    </tr>
+% }
+</table>
+</div>
