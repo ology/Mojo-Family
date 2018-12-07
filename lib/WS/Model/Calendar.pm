@@ -99,6 +99,9 @@ sub cal {
     $cal->border(0);
 
     while ( my $next = $entries->hash ) {
+        if ( $cal->getcontent( $next->{day} ) ) {
+            $cal->addcontent( $next->{day}, '<br/>' );
+        }
         $cal->addcontent(
             $next->{day},
             qq|<b><a href="/calendar?year=$year&month=$month&id=$next->{id}">$next->{title}</a></b>|
