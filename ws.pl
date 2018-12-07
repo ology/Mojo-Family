@@ -333,7 +333,7 @@ __DATA__
         <b><a class="button" href="/addressbook">Addresses</a></b>
         <b><a class="button" href="/album">Album</a></b>
         <b><a class="button" href="/calendar">Calendar</a></b>
-        <b><a class="button" href="/">Chat</a></b>
+        <b><a class="button" href="/chat">Chat</a></b>
         <b><a class="button" href="/cookbook">Cookbook</a></b>
 % if ( title eq 'History' || title eq 'Ban' || title eq 'Email' || title eq 'Log' || title eq 'Users' || title eq 'Messages' ) {
         <b><a class="button" href="/ban">Bans</a></b>
