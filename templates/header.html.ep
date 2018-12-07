@@ -3,7 +3,7 @@
         <h4><b><i><%= title %>!</i></b></h4>
     </div>
     <div class="nine columns btnright">
-        <b><a class="button" href="/addressbook">Addresses</a></b>
+        <b><a class="button" href="/address">Address</a></b>
         <b><a class="button" href="/album">Album</a></b>
         <b><a class="button" href="/calendar">Calendar</a></b>
         <b><a class="button" href="/chat">Chat</a></b>
