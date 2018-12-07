@@ -286,12 +286,11 @@ __DATA__
     %= text_field 'event_note' => $event->{note}, size => 50, maxlength => 90, placeholder => 'Notes'
     &nbsp;&nbsp;Sticky:
     %= check_box 'event_sticky' => $event->{sticky}
-% if ( $method eq 'Add' ) {
     %= tag 'br'
+% if ( $method eq 'Add' ) {
     %= submit_button $method, name => $method, id => $method, class => 'button-primary'
     <input type="reset" name="reset" value="reset" class="button" />
 % } else {
-    %= tag 'br'
     %= hidden_field 'id' => $event->{id}
     %= hidden_field 'month' => $event->{month}
     %= submit_button $method, name => $method, id => $method, class => 'button-primary'
