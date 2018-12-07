@@ -88,8 +88,22 @@ sub delete {
 sub cal {
     my ($self, $db, $tz, $year, $month) = @_;
 
+    my $now = DateTime->now( time_zone => $tz );
+    $year ||= $now->year;
+    $month ||= $now->month;
+
+    my $sql = 'SELECT * FROM calendar WHERE month = ?';
+    my $entries = $db->query($sql, $month);
+
     my $cal = HTML::CalendarMonthSimple->new( month => $month, year => $year );
     $cal->border(0);
+
+    while ( my $next = $entries->hash ) {
+        $cal->addcontent(
+            $next->{day},
+            qq|<b><a href="/calendar?year=$year&month=$month&id=$next->{id}">$next->{title}</a></b>|
+        );
+    }
 
     return $cal->as_HTML;
 }

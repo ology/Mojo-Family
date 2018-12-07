@@ -118,8 +118,6 @@ group {
         }
         $c->stash(event => $event);
 
-        my $events = $c->calendar->events($DB, app->config->{timezone}, undef, $month);
-        $c->stash(events => $events);
         $c->stash(month => $month);
 
         my $cal = $c->calendar->cal($DB, app->config->{timezone}, $year, $month);
@@ -323,17 +321,6 @@ __DATA__
     </div>
 </div>
 <%== $cal %>
-<ol>
-% for my $event ( @$events ) {
-            <li>
-                <a href="/calendar?id=<%= $event->{id} %>&month=<%= $event->{month} %>"><%= $event->{month} %>/<%= $event->{day} %></a> - <%= $event->{title} %>
-%       if ( $event->{note} ) {
-%= tag 'br'
-                &nbsp;&nbsp;&nbsp;&nbsp; <span class="event_note"><%= $event->{note} %></span>
-%       }
-                </li>
-% }
-</ol>
 </div>
 
 
