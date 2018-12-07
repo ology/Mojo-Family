@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title><%= title %></title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="google" content="notranslate">
+    <link rel="stylesheet" type="text/css" href="<%= url_for 'normalize.css' %>">
+    <link rel="stylesheet" type="text/css" href="<%= url_for 'skeleton.css' %>">
+    <link rel="stylesheet" type="text/css" href="<%= url_for 'style.css' %>">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<%= content %>
+<div class="row brown">
+<div class="four columns leftpad">
+<%= link_to '/privacy.html' => begin %>Privacy policy<% end %>
+</div>
+<div class="four columns centerpad">
+<%= link_to '/help.html' => begin %>Help<% end %>
+</div>
+<div class="four columns rightpad">
+    Built by <a href="http://gene.ology.net/">Gene Boggs</a>
+</div>
+</div>
+</body>
+</html>

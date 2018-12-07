@@ -1,0 +1,67 @@
+% layout 'default', title => 'Calendar';
+<div class="container">
+%= include 'header', title => 'Calendar';
+<div class="row">
+    <div class="eight columns">
+%= form_for calendar => (method => 'POST') => begin
+    %= text_field 'event_title' => $event->{title}, size => 20, maxlength => 20, placeholder => 'Title'
+    Month:
+    <select name="event_month">
+% for my $i ( 1 .. 12 ) {
+        <option value="<%= $i %>"
+%   if ( $event->{month} && $i == $event->{month} ) {
+            selected
+%   }
+><%= $i %></option>
+% }
+    </select>
+    Day:
+    <select name="event_day">
+% for my $i ( 1 .. 31 ) {
+        <option value="<%= $i %>"
+%   if ( $event->{day} && $i == $event->{day} ) {
+            selected
+%   }
+><%= $i %></option>
+% }
+    </select>
+    %= tag 'br'
+    %= text_field 'event_note' => $event->{note}, size => 50, maxlength => 90, placeholder => 'Notes'
+    &nbsp;&nbsp;Sticky:
+    %= check_box 'event_sticky' => $event->{sticky}
+    %= tag 'br'
+% if ( $method eq 'Add' ) {
+    %= submit_button $method, name => $method, id => $method, class => 'button-primary'
+    <input type="reset" name="reset" value="reset" class="button" />
+% } else {
+    %= hidden_field 'id' => $event->{id}
+    %= hidden_field 'month' => $event->{month}
+    %= submit_button $method, name => $method, id => $method, class => 'button-primary'
+    &nbsp;
+    <input type="submit" name="Delete" value="Delete" id="Delete" class="button-primary" onclick="return confirm('Delete <%= $event->{title} %>?')" />
+    &nbsp;
+    %= link_to Cancel => 'calendar', class => 'button'
+% }
+% end
+    </div>
+    <div class="four columns rightpad">
+%= form_for calendar => (method => 'GET') => begin
+    Goto:
+    <select name="month" onchange="this.form.submit()">
+        <option value=""></option>
+% for my $i ( 1 .. 12 ) {
+        <option value="<%= $i %>"
+%   if ( $month && $i == $month ) {
+            selected
+%   }
+><%= $i %></option>
+% }
+    </select>
+    %= text_field 'year', size => 4, maxlength => 4, placeholder => 'Year'
+%= end
+    </div>
+</div>
+<%== $cal %>
+</div>
+
+

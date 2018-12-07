@@ -1,0 +1,15 @@
+% layout 'default', title => 'Login';
+<div class="container">
+<h1><%= title %></h1>
+%= form_for index => begin
+    % if (param 'user') {
+        <b>Wrong name or password, please try again.</b><br>
+    % }
+    %= text_field 'user', placeholder => 'Name'
+    %= tag 'br'
+    %= password_field 'pass', placeholder => 'Password'
+    %= tag 'br'
+    %= submit_button 'Login'
+% end
+</div>
+

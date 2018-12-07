@@ -1,0 +1,7 @@
+% layout 'default', title => 'Error';
+<div class="container">
+%= include 'header', title => 'Error';
+<p><%= $exception->message %></p>
+</div>
+
+

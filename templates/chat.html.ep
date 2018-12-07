@@ -1,0 +1,63 @@
+% my $placeholder = "What's on your mind, " . $c->session('user') . '?';
+% layout 'default', title => 'Family Chat';
+<div class="container">
+%= include 'header', title => 'Family Chat', month => 1;
+%= text_area 'chat', name => 'text', class => 'chat', id => 'chat', placeholder => $placeholder
+%= tag 'br'
+%= submit_button 'Chat', name => 'submit', id => 'submit', class => 'button-primary'
+%= tag 'br'
+<div class="row">
+    <div class="nine columns">
+        <div name="data" id="data">
+% for my $line ( @$lines ) {
+            <p><%== $line %></p>
+% }
+        </div>
+    </div>
+    <div class="three columns">
+        <b>This month:</b>
+%= tag 'br'
+        <ul class="event">
+% for my $event ( @$events ) {
+            <li><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %>
+%       if ( $event->{note} ) {
+%= tag 'br'
+                &nbsp;&nbsp;&nbsp;&nbsp; <span class="event_note"><%= $event->{note} %></span>
+%       }
+                </li>
+% }
+        </ul>
+% if ( @$important ) {
+        <b>This year:</b>
+%= tag 'br'
+        <ul class="event">
+%   for my $event ( @$important ) {
+            <li><%= $event->{month} %>/<%= $event->{day} %> - <%= $event->{title} %>
+%       if ( $event->{note} ) {
+%= tag 'br'
+                &nbsp;&nbsp;&nbsp;&nbsp; <span class="event_note"><%= $event->{note} %></span>
+%       }
+                </li>
+%   }
+        </ul>
+% }
+    </div>
+</div>
+<script>
+    var ws = new WebSocket('<%= url_for('echo')->to_abs %>');
+    ws.onmessage = function (event) {
+        $('#data').prepend('<p>' + JSON.parse(event.data).msg + '</p>');
+    };
+    ws.onopen = function (event) {
+        console.log('ws.onopen');
+    };
+    $('#submit').click(function (e) {
+        if ($('#chat').val()) {
+            ws.send(JSON.stringify({msg: $('#chat').val()}));
+            $('#chat').val('');
+        }
+    });
+</script>
+</div>
+
+
