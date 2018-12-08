@@ -1,8 +1,13 @@
 % layout 'default', title => 'Address';
+
 <div class="container">
+
 %= include 'header', title => 'Address';
-<div class="row">
+
+<p id="show_hide">Click for new entry</p>
+<div id="form" class="row">
     <div class="twelve columns">
+
 %= form_for address => (method => 'POST') => begin
     %= text_field 'first_name' => $addr->{first_name}, size => 20, maxlength => 20, placeholder => 'First name'
     %= text_field 'last_name' => $addr->{last_name}, size => 20, maxlength => 20, placeholder => 'Last name'
@@ -17,6 +22,7 @@
     %= text_field 'phone2' => $addr->{phone2}, size => 15, maxlength => 15, placeholder => 'Phone2'
     %= text_field 'email' => $addr->{email}, size => 40, maxlength => 50, placeholder => 'Email'
     %= tag 'br'
+
 % if ( $method eq 'Add' ) {
     %= submit_button $method, name => $method, id => $method, class => 'button-primary'
     <input type="reset" name="reset" value="reset" class="button" />
@@ -28,9 +34,12 @@
     &nbsp;
     %= link_to Cancel => 'address', class => 'button'
 % }
+
 % end
+
     </div>
 </div>
+
 <table>
     <tr>
         <th>First name</th>
@@ -58,3 +67,12 @@
 % }
 </table>
 </div>
+
+<script>
+$(document).ready(function() {
+    $("#form").hide()
+    $("#show_hide").click(function () {
+        $("#form").toggle()
+    });
+});
+</script>
