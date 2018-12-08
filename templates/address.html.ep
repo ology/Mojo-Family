@@ -4,8 +4,7 @@
 
 %= include 'header', title => 'Address';
 
-<span id="show_hide"><a>Click for new entry</a></span>
-<div id="form" class="row">
+<div class="row">
     <div class="twelve columns">
 
 %= form_for address => (method => 'POST') => begin
@@ -67,12 +66,3 @@
 % }
 </table>
 </div>
-
-<script>
-$(document).ready(function() {
-    $("#form").hide()
-    $("#show_hide").click(function () {
-        $("#form").toggle()
-    });
-});
-</script>
