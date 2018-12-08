@@ -14,7 +14,15 @@
     %= text_field 'street' => $addr->{street}, size => 20, maxlength => 50, placeholder => 'Street'
     %= text_field 'city' => $addr->{city}, size => 20, maxlength => 20, placeholder => 'City'
     State:
-    %= text_field 'state' => $addr->{state}, size => 2, maxlength => 2, placeholder => '##'
+    <select name="state">
+% for my $state ( @$states ) {
+        <option value="<%= $state %>"
+%   if ( $addr->{state} && $state eq $addr->{state} ) {
+            selected
+%   }
+        ><%= $state %></option>
+% }
+    </select>
     %= text_field 'zip' => $addr->{zip}, size => 10, maxlength => 10, placeholder => 'Zip'
     %= tag 'br'
     %= text_field 'phone' => $addr->{phone}, size => 15, maxlength => 15, placeholder => 'Phone'

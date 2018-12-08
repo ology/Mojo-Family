@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 use Cwd;
+use Locale::US;
 use Mojolicious::Lite;
 use Mojo::mysql;
 
@@ -181,6 +182,10 @@ group {
 
         my $addrs = $c->address->addrs($DB);
         $c->stash(addrs => $addrs);
+
+        my $us = Locale::US->new;
+        my @code = $us->all_state_codes;
+        $c->stash(states => \@code);
     };
 
     post '/address' => sub {
