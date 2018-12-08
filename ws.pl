@@ -225,6 +225,8 @@ group {
                 id => $c->param('id'),
             );
         }
+
+        $c->redirect_to('/address');
     };
 };
 
