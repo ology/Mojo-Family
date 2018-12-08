@@ -4,7 +4,7 @@
 
 %= include 'header', title => 'Calendar';
 
-<div class="row">
+<div id="form" class="row">
     <div class="eight columns">
 
 %= form_for calendar => (method => 'POST') => begin
@@ -73,5 +73,3 @@
 <%== $cal %>
 
 </div>
-
-
