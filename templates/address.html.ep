@@ -4,7 +4,7 @@
 
 %= include 'header', title => 'Address';
 
-<p id="show_hide">Click for new entry</p>
+<span id="show_hide"><a>Click for new entry</a></span>
 <div id="form" class="row">
     <div class="twelve columns">
 
