@@ -242,6 +242,7 @@ get '/logout' => sub {
 
 sub defang {
     my ($string) = @_;
+    return '' unless $string;
     $string =~ s/</&lt;/g;
     $string =~ s/>/&gt;/g;
     return $string;
