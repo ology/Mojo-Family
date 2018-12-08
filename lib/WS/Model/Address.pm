@@ -46,7 +46,7 @@ sub add {
     die "Invalid entry\n" unless $args{db} && $args{first_name} && $args{last_name};
 
     $args{db}->query(
-        'INSERT INTO calendar (first_name,last_name,street,city,state,zip,phone,phone2,email,notes) VALUES (?,?,?,?,?,?,?,?,?,?)',
+        'INSERT INTO address (first_name,last_name,street,city,state,zip,phone,phone2,email,notes) VALUES (?,?,?,?,?,?,?,?,?,?)',
         $args{first_name}, $args{last_name}, $args{street}, $args{city}, $args{state}, $args{zip}, $args{phone}, $args{phone2}, $args{email}, $args{notes}
     );
 }
