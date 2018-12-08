@@ -134,10 +134,10 @@ group {
         if ( $method eq 'Add' ) {
             $c->calendar->add(
                 db     => $DB,
-                title  => $c->param('event_title'),
+                title  => defang( $c->param('event_title') ),
                 month  => $c->param('event_month'),
                 day    => $c->param('event_day'),
-                note   => $c->param('event_note'),
+                note   => defang( $c->param('event_note') ),
                 sticky => $c->param('event_sticky'),
             );
         }
@@ -145,10 +145,10 @@ group {
             $c->calendar->update(
                 db     => $DB,
                 id     => $c->param('id'),
-                title  => $c->param('event_title'),
+                title  => defang( $c->param('event_title') ),
                 month  => $c->param('event_month'),
                 day    => $c->param('event_day'),
-                note   => $c->param('event_note'),
+                note   => defang( $c->param('event_note') ),
                 sticky => $c->param('event_sticky'),
             );
         }
@@ -181,7 +181,50 @@ group {
 
         my $addrs = $c->address->addrs($DB);
         $c->stash(addrs => $addrs);
+    };
 
+    post '/address' => sub {
+        my $c = shift;
+
+        my $method = $c->param('Add') || $c->param('Update') || $c->param('Delete');
+
+        if ( $method eq 'Add' ) {
+            $c->address->add(
+                db         => $DB,
+                first_name => defang( $c->param('first_name') ),
+                last_name  => defang( $c->param('last_name') ),
+                street     => defang( $c->param('street') ),
+                city       => defang( $c->param('city') ),
+                state      => $c->param('state'),
+                zip        => $c->param('zip'),
+                phone      => defang( $c->param('phone') ),
+                phone2     => defang( $c->param('phone2') ),
+                email      => defang( $c->param('email') ),
+                notes      => defang( $c->param('notes') ),
+            );
+        }
+        elsif ( $method eq 'Update' ) {
+            $c->address->update(
+                db         => $DB,
+                id         => $c->param('id'),
+                first_name => defang( $c->param('first_name') ),
+                last_name  => defang( $c->param('last_name') ),
+                street     => defang( $c->param('street') ),
+                city       => defang( $c->param('city') ),
+                state      => $c->param('state'),
+                zip        => $c->param('zip'),
+                phone      => defang( $c->param('phone') ),
+                phone2     => defang( $c->param('phone2') ),
+                email      => defang( $c->param('email') ),
+                notes      => defang( $c->param('notes') ),
+            );
+        }
+        elsif ( $method eq 'Delete' ) {
+            $c->address->delete(
+                db => $DB,
+                id => $c->param('id'),
+            );
+        }
     };
 };
 
@@ -194,5 +237,12 @@ get '/logout' => sub {
     # Redirect to main page with a 302 response
     $c->redirect_to('index');
 };
+
+sub defang {
+    my ($string) = @_;
+    $string =~ s/</&lt;/g;
+    $string =~ s/>/&gt;/g;
+    return $string;
+}
 
 app->start;
