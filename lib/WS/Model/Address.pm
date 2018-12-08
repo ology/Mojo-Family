@@ -43,22 +43,22 @@ sub addrs {
 sub add {
     my ( $self, %args ) = @_;
 
-    die "Invalid entry\n" unless $args{db} && $args{month} && $args{day} && $args{title};
+    die "Invalid entry\n" unless $args{db} && $args{first_name} && $args{last_name};
 
     $args{db}->query(
-        'INSERT INTO calendar (title, month, day, note) VALUES (?,?,?,?)',
-        $args{title}, $args{month}, $args{day}, $args{note}
+        'INSERT INTO calendar (first_name,last_name,street,city,state,zip,phone,phone2,email,notes) VALUES (?,?,?,?,?,?,?,?,?,?)',
+        $args{first_name}, $args{last_name}, $args{street}, $args{city}, $args{state}, $args{zip}, $args{phone}, $args{phone2}, $args{email}, $args{notes}
     );
 }
 
 sub update {
     my ( $self, %args ) = @_;
 
-    die "Invalid entry\n" unless $args{db} && $args{month} && $args{day} && $args{title};
+    die "Invalid entry\n" unless $args{db} && $args{first_name} && $args{last_name};
 
     $args{db}->query(
-        'UPDATE calendar SET title=?, month=?, day=?, note=? WHERE id = ?',
-        $args{title}, $args{month}, $args{day}, $args{note}, $args{id}
+        'UPDATE address SET first_name=?, last_name=?, street=?, city=?, state=?, zip=?, phone=?, phone2=?, email=?, notes=? WHERE id = ?',
+        $args{first_name}, $args{last_name}, $args{street}, $args{city}, $args{state}, $args{zip}, $args{phone}, $args{phone2}, $args{email}, $args{notes}, $args{id}
     );
 }
 
@@ -67,7 +67,7 @@ sub delete {
 
     die "Invalid entry\n" unless $args{db} && $args{id};
 
-    $args{db}->query( 'DELETE FROM calendar WHERE id = ?', $args{id} );
+    $args{db}->query( 'DELETE FROM address WHERE id = ?', $args{id} );
 }
 
 1;
