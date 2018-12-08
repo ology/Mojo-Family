@@ -24,16 +24,16 @@ sub addrs {
     while ( my $next = $entries->hash ) {
         push @addrs, {
             id         => $next->{id},
-            first_name => $next->{first_name},
-            last_name  => $next->{last_name},
-            street     => $next->{street},
-            city       => $next->{city},
-            state      => $next->{state},
-            zip        => $next->{zip},
-            phone      => $next->{phone},
-            phone2     => $next->{phone2},
-            email      => $next->{email},
-            notes      => $next->{notes},
+            first_name => $next->{first_name} || '',
+            last_name  => $next->{last_name} || '',
+            street     => $next->{street} || '',
+            city       => $next->{city} || '',
+            state      => $next->{state} || '',
+            zip        => $next->{zip} || '',
+            phone      => $next->{phone} || '',
+            phone2     => $next->{phone2} || '',
+            email      => $next->{email} || '',
+            notes      => $next->{notes} || '',
         };
     }
 
