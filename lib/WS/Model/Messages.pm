@@ -34,9 +34,17 @@ sub add {
     die "Invalid entry\n" unless $args{db} && $args{first_name} && $args{last_name} && $args{email};
 
     $args{db}->query(
-        'INSERT INTO message (first_name,last_name,email,username,month,day) VALUES (?,?,?,?,?,?)',
-        $args{first_name}, $args{last_name}, $args{email}, $args{month}, $args{day}
+        'INSERT INTO message (first_name,last_name,email,username,month,day,message) VALUES (?,?,?,?,?,?,?)',
+        $args{first_name}, $args{last_name}, $args{email}, $args{month}, $args{day}, $args{message}
     );
+}
+
+sub delete {
+    my ( $self, %args ) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{id};
+
+    $args{db}->query( 'DELETE FROM message WHERE id = ?', $args{id} );
 }
 
 1;
