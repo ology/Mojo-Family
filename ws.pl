@@ -98,6 +98,31 @@ group {
         $c->stash(entries => $messages);
     };
 
+    post '/messages' => sub {
+        my $c = shift;
+
+        my $method = $c->param('Grant') || $c->param('Deny');
+
+        if ( $method eq 'Grant' ) {
+            $c->messages->grant(
+                db         => $DB,
+                stamp      => $c->param('stamp'),
+                first_name => $c->param('first_name'),
+                last_name  => $c->param('last_name'),
+                username   => $c->param('username'),
+                email      => $c->param('email'),
+                month      => $c->param('month'),
+                day        => $c->param('day'),
+                message    => $c->param('message'),
+            );
+        }
+        elsif ( $method eq 'Deny' ) {
+            $c->messages->delete(db => $DB, id => $c->param('id'));
+        }
+
+        $c->redirect_to('/messages');
+    };
+
     get '/chat' => sub {
         my $c = shift;
 

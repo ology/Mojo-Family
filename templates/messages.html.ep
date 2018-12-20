@@ -4,16 +4,15 @@
 
 %= include 'header', title => 'Messages';
 
+<p><b>Access Request:</b></p>
+
 % for my $entry ( @$entries ) {
-<div class="row">
-<div class="twelve columns">
-    <p><b>Access Request:</b></p>
     <%== $entry->{first_name} %> <%== $entry->{last_name} %>
-    <<a href="mailto:<%= $entry->{email} %>"><%= $entry->{email} %></a>>
+    &lt;<a href="mailto:<%= $entry->{email} %>"><%= $entry->{email} %></a>&gt;
     <br/>
     Username: <%== $entry->{username} %>
     <br/>
-    <form action="/grant_access" method="post" class="block">
+    <form action="messages" method="post" class="block">
         <input type="hidden" name="id" value="<%= $entry->{id} %>" />
         <input type="hidden" name="first_name" value="<%== $entry->{first_name} %>" />
         <input type="hidden" name="last_name" value="<%== $entry->{last_name} %>" />
@@ -21,15 +20,10 @@
         <input type="hidden" name="email" value="<%= $entry->{email} %>" />
         <input type="hidden" name="month" value="<%= $entry->{month} %>" />
         <input type="hidden" name="day" value="<%= $entry->{day} %>" />
-        <input type="submit" name="grant" value="Grant" />
-    </form>
-    <form action="/deny_access" method="post" class="block">
-        <input type="hidden" name="id" value="<%= $entry->{id} %>" />
-        <input type="submit" name="deny" value="Deny" />
+        <input type="submit" name="Grant" value="Grant" />
+        <input type="submit" name="Deny" value="Deny" />
     </form>
     <hr>
-</div>
-</div>
 % }
 
 </div>
