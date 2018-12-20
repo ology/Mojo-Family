@@ -10,6 +10,7 @@ use WS::Model::Users;
 use WS::Model::Chat;
 use WS::Model::Calendar;
 use WS::Model::Address;
+use WS::Model::Messages;
 
 plugin 'Config';
 
@@ -29,10 +30,12 @@ push @{app->static->paths}, $CWD . '/public',
                             $CWD . '/public/css';
 
 # Helpers to lazy initialize and store model objects
+helper messages => sub { state $messages = WS::Model::Messages->new };
 helper users => sub { state $users = WS::Model::Users->new };
 helper chat => sub { state $chat = WS::Model::Chat->new };
 helper calendar => sub { state $calendar = WS::Model::Calendar->new };
 helper address => sub { state $address = WS::Model::Address->new };
+#helper album => sub { state $album = WS::Model::Album->new };
  
 my $clients = {};
 
@@ -87,6 +90,12 @@ group {
         return 1 if $c->session('user');
         $c->redirect_to('index');
         return undef;
+    };
+
+    get '/messages' => sub {
+        my $c = shift;
+        my $messages = $c->messages->entries($DB);
+        $c->stash(entries => $messages);
     };
 
     get '/chat' => sub {
@@ -232,6 +241,13 @@ group {
         }
 
         $c->redirect_to('/address');
+    };
+
+    get '/album' => sub {
+        my $c = shift;
+
+        my $entries = $c->users->active($DB);
+        $c->stash(entries => $entries);
     };
 };
 
