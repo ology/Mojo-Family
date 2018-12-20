@@ -11,5 +11,10 @@
     %= tag 'br'
     %= submit_button 'Login'
 % end
+
+<p>If not yet a member, just signup (and then await approval):
+<a href="/request" class="button">Signup</a>
+</p>
+
 </div>
 

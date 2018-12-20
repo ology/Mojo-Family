@@ -251,6 +251,8 @@ group {
     };
 };
 
+get '/request' => sub {};
+
 get '/logout' => sub {
     my $c = shift;
 

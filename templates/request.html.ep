@@ -1,0 +1,32 @@
+% layout 'default', title => 'Request';
+
+<div class="container">
+
+<h1><%= title %></h1>
+%= form_for request_access => (method => 'POST') => begin
+        <input type="text" name="first_name" size="20" maxlength="20" placeholder="First name" />
+        <input type="text" name="last_name" size="20" maxlength="20" placeholder="Last name" />
+        <br/>
+        <input type="text" name="email" size="40" maxlength="50" placeholder="Email" />
+        <br/>
+        <input type="text" name="username" size="20" maxlength="20" placeholder="User name" /> (first name if left blank)
+        <br/>
+        Birthday month: <select name="month">
+            <option value="" selected></option>
+% for my $i ( 1 .. 12 ) {
+            <option value="<%= $i %>"><%= $i %></option>
+% }
+        </select>
+        Day: <select name="day">
+            <option value="" selected></option>
+% for my $i ( 1 .. 31 ) {
+            <option value="<%= $i %>"><%= $i %></option>
+% }
+        </select> (optional)
+        <br/>
+        <input type="submit" name="request" value="Request" class="button-primary" />
+        <input type="reset" name="reset" value="Reset" class="button" />
+% end
+
+</div>
+
