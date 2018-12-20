@@ -253,6 +253,19 @@ group {
 
 get '/request' => sub {};
 
+post '/request_access' => sub {
+    my $c = shift;
+    $c->messages->add(
+        db         => $DB,
+        first_name => defang( $c->param('first_name') ),
+        last_name  => defang( $c->param('last_name') ),
+        email      => defang( $c->param('email') ),
+        username   => defang( $c->param('username') ),
+        $c->param('month') ? ( month => $c->param('month') ) : (),
+        $c->param('day') ? ( day => $c->param('day') ) : (),
+    );
+} => 'index';
+
 get '/logout' => sub {
     my $c = shift;
 

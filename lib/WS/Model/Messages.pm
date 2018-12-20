@@ -28,4 +28,15 @@ sub entries {
     return \@entries;
 }
 
+sub add {
+    my ( $self, %args ) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{first_name} && $args{last_name} && $args{email};
+
+    $args{db}->query(
+        'INSERT INTO message (first_name,last_name,email,username,month,day) VALUES (?,?,?,?,?,?)',
+        $args{first_name}, $args{last_name}, $args{email}, $args{month}, $args{day}
+    );
+}
+
 1;
