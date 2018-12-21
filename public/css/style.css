@@ -113,8 +113,11 @@ a:active {
     text-decoration: underline;
 }
 
-div.flashmsg {
-    background: #CEE5F5;
-    padding: 0.5em;
-    border: 1px solid #AACBE2;
+.notify {
+    font-weight: bold;
+}
+.notify-success {
+    color: white;
+    background-color: blue;
+    padding: 10px;
 }

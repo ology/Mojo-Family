@@ -4,9 +4,12 @@
 
 %= include 'header', title => 'Messages';
 
-<p><b>Access Request:</b></p>
+%= notifications 'html';
+
+<br>
 
 % for my $entry ( @$entries ) {
+    <p><b>Access Request:</b></p>
     <%== $entry->{first_name} %> <%== $entry->{last_name} %>
     &lt;<a href="mailto:<%= $entry->{email} %>"><%= $entry->{email} %></a>&gt;
     <br/>

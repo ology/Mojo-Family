@@ -4,6 +4,9 @@ use strict;
 use warnings;
 
 use Crypt::SaltedHash;
+use Text::Password::Pronounceable;
+
+my $PWSIZE = 6;
 
 sub new { bless {}, shift }
 
@@ -37,6 +40,25 @@ sub active {
     }
 
     return \@entries;
+}
+
+sub grant {
+    my ($self, %args) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{username};
+
+    my $pass = Text::Password::Pronounceable->generate( $PWSIZE, $PWSIZE );
+
+    my $csh = Crypt::SaltedHash->new( algorithm => 'SHA-1' );
+    $csh->add($pass);
+    my $encrypted = $csh->generate;
+
+    $args{db}->query(
+        'INSERT INTO user (username,password) VALUES (?,?)',
+        $args{username}, $encrypted
+    );
+
+    return $pass;
 }
 
 1;

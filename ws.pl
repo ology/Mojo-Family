@@ -14,6 +14,10 @@ use WS::Model::Messages;
 
 plugin 'Config';
 
+plugin Notifications => {
+    HTML => 1,
+};
+
 my $CWD = cwd();
 
 my $CHATFILE = $CWD . '/chat.txt';
@@ -104,21 +108,18 @@ group {
         my $method = $c->param('Grant') || $c->param('Deny');
 
         if ( $method eq 'Grant' ) {
-            $c->messages->grant(
-                db         => $DB,
-                stamp      => $c->param('stamp'),
-                first_name => $c->param('first_name'),
-                last_name  => $c->param('last_name'),
-                username   => $c->param('username'),
-                email      => $c->param('email'),
-                month      => $c->param('month'),
-                day        => $c->param('day'),
-                message    => $c->param('message'),
+            my $user = $c->param('username') || $c->param('first_name');
+            my $pass = $c->users->grant(
+                db       => $DB,
+                username => $user,
             );
+
+            my $email = $c->param('email');
+            my $notify = "New user: $user, Email: $email, Temporary password: $pass";
+            $c->notify(success => $notify);
         }
-        elsif ( $method eq 'Deny' ) {
-            $c->messages->delete(db => $DB, id => $c->param('id'));
-        }
+
+        $c->messages->delete(db => $DB, id => $c->param('id'));
 
         $c->redirect_to('/messages');
     };
