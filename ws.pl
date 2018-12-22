@@ -128,6 +128,34 @@ group {
 
     get '/email' => sub {};
 
+    get '/users' => sub {
+        my $c = shift;
+        my $entries = $c->users->entries($DB);
+        $c->stash(entries => $entries);
+    };
+
+    post '/users' => sub {
+        my $c = shift;
+
+        my $method = $c->param('Reset') || $c->param('Delete');
+
+        if ( $method eq 'Delete' ) {
+            $c->users->delete(
+                db => $DB,
+                id => $c->param('id'),
+            );
+        }
+        elsif ( $method eq 'Reset' ) {
+            my $pass = $c->users->reset(
+                db => $DB,
+                id => $c->param('id'),
+            );
+
+            $c->flash(password => "Temporary password: $pass");
+        }
+        $c->redirect_to('users');
+    };
+
     get '/chat' => sub {
         my $c = shift;
 

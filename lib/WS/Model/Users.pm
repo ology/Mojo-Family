@@ -61,4 +61,49 @@ sub grant {
     return $pass;
 }
 
+sub entries {
+    my ($self, $db) = @_;
+
+    my $entries = $db->query('SELECT * FROM user WHERE admin != 1 ORDER BY created');
+
+    my @entries;
+    while (my $next = $entries->hash) {
+        push @entries, {
+            id       => $next->{id},
+            username => $next->{username},
+            active   => $next->{active},
+            admin    => $next->{admin},
+        };
+    }
+
+    return \@entries;
+}
+
+sub delete {
+    my ( $self, %args ) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{id};
+
+    $args{db}->query( 'DELETE FROM user WHERE id = ?', $args{id} );
+}
+
+sub reset {
+    my ($self, %args) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{id};
+
+    my $pass = Text::Password::Pronounceable->generate( $PWSIZE, $PWSIZE );
+
+    my $csh = Crypt::SaltedHash->new( algorithm => 'SHA-1' );
+    $csh->add($pass);
+    my $encrypted = $csh->generate;
+
+    $args{db}->query(
+        'UPDATE user SET password=? WHERE id = ?',
+        $encrypted, $args{id}
+    );
+
+    return $pass;
+}
+
 1;

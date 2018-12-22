@@ -1,0 +1,27 @@
+% layout 'default', title => 'Users';
+
+<div class="container">
+
+%= include 'header', title => 'Users';
+
+<br>
+
+% if (my $password = flash 'password') {
+  <div class="notify notify-success"><%= $password %></div>
+% }
+
+
+% for my $entry ( @$entries ) {
+    Username: <%== $entry->{username} %>
+    <br/>
+    Active: <%= $entry->{active} %>, Admin: <%= $entry->{admin} %>
+    <br/>
+    <form action="users" method="post" class="block">
+        <input type="hidden" name="id" value="<%= $entry->{id} %>" />
+        <input type="submit" name="Delete" value="Delete" />
+        <input type="submit" name="Reset" value="Reset" />
+    </form>
+    <br/>
+% }
+
+</div>
