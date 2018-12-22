@@ -151,7 +151,7 @@ group {
                 id => $c->param('id'),
             );
 
-            $c->flash(password => "Temporary password: $pass");
+            $c->flash(message => 'User: ' . $c->param('username') . ", Temporary password: $pass");
         }
         $c->redirect_to('users');
     };
