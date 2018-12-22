@@ -4,8 +4,6 @@
 
 %= include 'header', title => 'Messages';
 
-%= notifications 'html';
-
 <br>
 
 % for my $entry ( @$entries ) {

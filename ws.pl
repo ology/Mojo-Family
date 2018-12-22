@@ -14,10 +14,6 @@ use WS::Model::Messages;
 
 plugin 'Config';
 
-plugin Notifications => {
-    HTML => 1,
-};
-
 my $CWD = cwd();
 
 my $CHATFILE = $CWD . '/chat.txt';
@@ -114,15 +110,23 @@ group {
                 username => $user,
             );
 
-            my $email = $c->param('email');
-            my $notify = "New user: $user, Email: $email, Temporary password: $pass";
-            $c->notify(success => $notify);
+            $c->messages->delete(db => $DB, id => $c->param('id'));
+
+            $c->stash(name => $c->param('first_name'));
+            $c->stash(username => $user);
+            $c->stash(password => $pass);
+            $c->stash(email => $c->param('email'));
+            $c->stash(database => 'example_family');
+            $c->stash(website => 'http://dev.ology.net:8880');
+
+            $c->render('email');
         }
-
-        $c->messages->delete(db => $DB, id => $c->param('id'));
-
-        $c->redirect_to('/messages');
+        else {
+            $c->messages->delete(db => $DB, id => $c->param('id'));
+        }
     };
+
+    get '/email' => sub {};
 
     get '/chat' => sub {
         my $c = shift;
