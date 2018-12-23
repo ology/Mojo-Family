@@ -6,14 +6,14 @@
 
 <div id="data">
     <div class="img">
-        <a href="album/Family"><img src="album/Family/example_family.jpg" height="10%" width="10%" /></a>
+        <a href="album?user=Family"><img src="album/Family/example_family.jpg" height="10%" width="10%" /></a>
         <div class="desc"><a href="album/Family"><b>Family</b></a></div>
     </div>
 
 % for my $entry ( @$entries ) {
     <div class="img">
-        <a href="album/<%= $entry->{username} %>"><img src="<%= $entry->{pic} %>" height="10%" width="10%" /></a>
-        <div class="desc"><a href="album/<%= $entry->{username} %>"><%== $entry->{username} %></a></div>
+        <a href="album?user=<%= $entry->{username} %>"><img src="<%= $entry->{pic} %>" height="10%" width="10%" /></a>
+        <div class="desc"><a href="album?user=<%= $entry->{username} %>"><%== $entry->{username} %></a></div>
     </div>
 % }
 
