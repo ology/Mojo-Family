@@ -35,7 +35,7 @@ helper users => sub { state $users = WS::Model::Users->new };
 helper chat => sub { state $chat = WS::Model::Chat->new };
 helper calendar => sub { state $calendar = WS::Model::Calendar->new };
 helper address => sub { state $address = WS::Model::Address->new };
-#helper album => sub { state $album = WS::Model::Album->new };
+helper album => sub { state $album = WS::Model::Album->new };
  
 my $clients = {};
 
@@ -304,7 +304,10 @@ group {
     get '/album' => sub {
         my $c = shift;
 
-        my $entries = $c->users->active($DB);
+        my $user = $c->param('user');
+
+        my $entries = defined $user ? $c->album->files($user) : $c->users->active($DB);
+
         $c->stash(entries => $entries);
     };
 };
