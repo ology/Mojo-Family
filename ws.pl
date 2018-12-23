@@ -117,7 +117,7 @@ group {
             $c->stash(username => $user);
             $c->stash(password => $pass);
             $c->stash(email => $c->param('email'));
-            $c->stash(database => 'example_family');
+            $c->stash(database => app->config->{dbname});
             $c->stash(website => 'http://dev.ology.net:8880');
 
             $c->render('email');
