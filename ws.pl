@@ -11,6 +11,7 @@ use WS::Model::Chat;
 use WS::Model::Calendar;
 use WS::Model::Address;
 use WS::Model::Messages;
+use WS::Model::Album;
 
 plugin 'Config';
 
