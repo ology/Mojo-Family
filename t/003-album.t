@@ -17,14 +17,13 @@ my $expected = [qw(
 
 is_deeply $files, $expected, 'Family files';
 
-$album->add('foo');
+my $user = 'test_' . time;
 
-ok -d 'public/album/foo', 'foo created';
+$album->add($user);
+ok -d "public/album/$user", "$user created";
+throws_ok { $album->add($user) } qr/File exists/, "$user re-create error";
 
-throws_ok { $album->add('foo') } qr/File exists/, 'foo re-create error';
-
-$album->delete('foo');
-
-ok !-d 'public/album/foo', 'foo deleted';
+$album->delete($user);
+ok !-d "public/album/$user", "$user deleted";
 
 done_testing();
