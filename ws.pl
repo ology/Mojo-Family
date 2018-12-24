@@ -133,6 +133,7 @@ group {
         }
         else {
             $c->messages->delete(db => $DB, id => $c->param('id'));
+            $c->redirect_to('messages');
         }
     };
 
