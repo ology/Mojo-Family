@@ -113,6 +113,13 @@ group {
 
             $c->album->add($user);
 
+            $c->address->add(
+                db         => $DB,
+                first_name => $c->param('first_name'),
+                last_name  => $c->param('last_name'),
+                email      => $c->param('email'),
+            );
+
             $c->messages->delete(db => $DB, id => $c->param('id'));
 
             $c->stash(name => $c->param('first_name'));
