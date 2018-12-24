@@ -111,6 +111,8 @@ group {
                 username => $user,
             );
 
+            $c->album->add($user);
+
             $c->messages->delete(db => $DB, id => $c->param('id'));
 
             $c->stash(name => $c->param('first_name'));
@@ -145,6 +147,8 @@ group {
                 db => $DB,
                 id => $c->param('id'),
             );
+
+            $c->album->delete($c->param('username'));
         }
         elsif ( $method eq 'Reset' ) {
             my $pass = $c->users->reset(
