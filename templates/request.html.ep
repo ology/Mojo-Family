@@ -24,6 +24,8 @@
 % }
         </select> (optional)
         <br/>
+        <textarea rows="4" cols="100" name="message" placeholder="Optional message for the administrator."></textarea>
+        <br/>
         <input type="submit" name="request" value="Request" class="button-primary" />
         <input type="reset" name="reset" value="Reset" class="button" />
 % end
