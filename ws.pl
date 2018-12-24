@@ -341,6 +341,7 @@ post '/request' => sub {
         username   => defang( $c->param('username') ),
         $c->param('month') ? ( month => $c->param('month') ) : (),
         $c->param('day') ? ( day => $c->param('day') ) : (),
+        message    => defang( $c->param('message') ),
     );
 
     $c->redirect_to('index');
