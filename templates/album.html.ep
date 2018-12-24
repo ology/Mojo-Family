@@ -4,10 +4,21 @@
 
 %= include 'header', title => 'Album';
 
+% if (my $message = flash 'message') {
+    <div class="notify notify-success"><%= $message %></div>
+    <br>
+% }
+
 <div id="data">
 
 % if ( defined $user ) {
-    <%= $user %>
+    % if ( $user eq $c->session('user') ) {
+    <form action="/album" method="POST" enctype="multipart/form-data">
+        <input type="file" name="filename"/>
+        <input type="hidden" name="target" value="<%= $user %>"/>
+        <input type="submit" value="Add" class="button-primary"/>
+    </form>
+    % }
     <br clear="all">
     % for my $entry ( @$entries ) {
     <div class="img">

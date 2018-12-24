@@ -334,6 +334,24 @@ group {
         my $entries = defined $user ? $c->album->files($user) : $c->users->active($DB);
         $c->stash(entries => $entries);
     };
+
+    post '/album' => sub {
+        my $c = shift;
+
+        return $c->render(text => 'File is too big.', status => 200)
+            if $c->req->is_limit_exceeded;
+
+        my $target = $c->param('target');
+
+        my $upload = $c->param('filename');
+        if ( $upload ) {
+            my $size = $upload->size;
+            my $name = $upload->filename;
+            $c->flash(message => "Uploaded $size byte file: $name");
+        }
+
+        $c->redirect_to("/album?user=$target");
+    };
 };
 
 get '/request' => sub {};
