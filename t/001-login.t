@@ -1,12 +1,10 @@
 use Test::More;
 use Test::Mojo;
+use Mojo::File qw( path );
 
-# Include application
-use FindBin;
-require "$FindBin::Bin/../script/ws";
+my $t = Test::Mojo->new( path('ws.pl') );
 
 # Allow 302 redirect responses
-my $t = Test::Mojo->new;
 $t->ua->max_redirects(1);
 
 # Test if the HTML login form exists
