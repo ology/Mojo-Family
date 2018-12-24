@@ -25,7 +25,7 @@ sub add {
 
     my $path = "$ALBUM/$user";
 
-    mkdir($path);
+    mkdir($path) or die "Can't mkdir $path: $!";
 
     open( my $fh, '>', "$path/image.caption" ) if -d $path;
 }
