@@ -35,7 +35,7 @@ sub add {
 
     $args{db}->query(
         'INSERT INTO message (first_name,last_name,email,username,month,day,message) VALUES (?,?,?,?,?,?,?)',
-        $args{first_name}, $args{last_name}, $args{email}, $args{month}, $args{day}, $args{message}
+        $args{first_name}, $args{last_name}, $args{email}, $next->{username}, $args{month}, $args{day}, $args{message}
     );
 }
 
