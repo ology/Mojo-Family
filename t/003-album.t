@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use Test::More;
+use Test::Exception;
 
 use_ok 'WS::Model::Album';
 
@@ -15,5 +16,15 @@ my $expected = [qw(
 )];
 
 is_deeply $files, $expected, 'Family files';
+
+$album->add('foo');
+
+ok -d 'public/album/foo', 'foo created';
+
+throws_ok { $album->add('foo') } qr/File exists/, 'foo re-create';
+
+$album->delete('foo');
+
+ok !-d 'public/album/foo', 'foo deleted';
 
 done_testing();
