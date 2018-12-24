@@ -99,7 +99,7 @@ sub reset {
     my $encrypted = $csh->generate;
 
     $args{db}->query(
-        'UPDATE user SET password=? WHERE id = ?',
+        'UPDATE user SET password=?, active=0 WHERE id = ?',
         $encrypted, $args{id}
     );
 
