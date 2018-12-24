@@ -21,7 +21,7 @@ $album->add('foo');
 
 ok -d 'public/album/foo', 'foo created';
 
-throws_ok { $album->add('foo') } qr/File exists/, 'foo re-create';
+throws_ok { $album->add('foo') } qr/File exists/, 'foo re-create error';
 
 $album->delete('foo');
 
