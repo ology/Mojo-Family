@@ -305,8 +305,9 @@ group {
     get '/album' => sub {
         my $c = shift;
 
-        my $user = $c->param('user');
-        $c->stash(user => $user) if $user;
+        my $user;
+        $user = $c->param('user');
+        $c->stash(user => $user);
 
         my $entries = defined $user ? $c->album->files($user) : $c->users->active($DB);
 
