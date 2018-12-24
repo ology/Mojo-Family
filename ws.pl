@@ -122,10 +122,10 @@ group {
 
             if ( $c->param('month') && $c->param('day') ) {
                 $c->calendar->add(
-                    db     => $DB,
-                    title  => $user,
-                    month  => $c->param('month'),
-                    day    => $c->param('day'),
+                    db    => $DB,
+                    title => $user,
+                    month => $c->param('month'),
+                    day   => $c->param('day'),
                 );
             }
 
