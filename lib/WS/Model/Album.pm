@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use File::Find::Rule;
+use File::Path qw( remove_tree );
 
 my $ALBUM = 'public/album';
 
@@ -28,6 +29,17 @@ sub add {
     mkdir($path) or die "Can't mkdir $path: $!";
 
     open( my $fh, '>', "$path/image.caption" ) if -d $path;
+}
+
+sub delete {
+    my ($self, $user) = @_;
+
+    my $count = 0;
+
+    my $path = "$ALBUM/$user";
+    if ( $user && -d $path ) {
+        $count = remove_tree($path);
+    }
 }
 
 1;
