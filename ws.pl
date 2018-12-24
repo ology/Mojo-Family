@@ -310,7 +310,6 @@ group {
         $c->stash(user => $user);
 
         my $entries = defined $user ? $c->album->files($user) : $c->users->active($DB);
-
         $c->stash(entries => $entries);
     };
 };
@@ -319,6 +318,7 @@ get '/request' => sub {};
 
 post '/request_access' => sub {
     my $c = shift;
+
     $c->messages->add(
         db         => $DB,
         first_name => defang( $c->param('first_name') ),
@@ -328,7 +328,9 @@ post '/request_access' => sub {
         $c->param('month') ? ( month => $c->param('month') ) : (),
         $c->param('day') ? ( day => $c->param('day') ) : (),
     );
-} => 'index';
+
+    $c->redirect_to('index');
+};
 
 get '/logout' => sub {
     my $c = shift;
