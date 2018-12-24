@@ -13,6 +13,8 @@
     <br/>
     Username: <%== $entry->{username} %>
     <br/>
+    Message <%== $entry->{message} %>
+    <br/>
     <form action="messages" method="post" class="block">
         <input type="hidden" name="id" value="<%= $entry->{id} %>" />
         <input type="hidden" name="first_name" value="<%== $entry->{first_name} %>" />
