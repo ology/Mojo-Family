@@ -3,7 +3,7 @@
 <div class="container">
 
 <h1><%= title %></h1>
-%= form_for request_access => (method => 'POST') => begin
+%= form_for request => (method => 'POST') => begin
         <input type="text" name="first_name" size="20" maxlength="20" placeholder="First name" />
         <input type="text" name="last_name" size="20" maxlength="20" placeholder="Last name" />
         <br/>

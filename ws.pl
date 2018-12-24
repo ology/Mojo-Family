@@ -316,7 +316,7 @@ group {
 
 get '/request' => sub {};
 
-post '/request_access' => sub {
+post '/request' => sub {
     my $c = shift;
 
     $c->messages->add(
