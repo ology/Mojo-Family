@@ -40,6 +40,8 @@ sub delete {
     if ( $user && -d $path ) {
         $count = remove_tree($path);
     }
+
+    return $count;
 }
 
 1;
