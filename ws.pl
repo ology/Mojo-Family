@@ -324,6 +324,8 @@ get '/request' => sub {};
 post '/request' => sub {
     my $c = shift;
 
+    ( my $first = $c->param('first_name') ) =~ s/[\s'"]/_/g;
+
     $c->messages->add(
         db         => $DB,
         first_name => defang( $c->param('first_name') ),
