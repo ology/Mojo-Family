@@ -64,6 +64,16 @@ sub add {
         'INSERT INTO calendar (title, month, day, note) VALUES (?,?,?,?)',
         $args{title}, $args{month}, $args{day}, $args{note}
     );
+
+    my $results = $args{db}->query('SELECT LAST_INSERT_ID() AS id');
+
+    my $id;
+    while ( my $next = $results->hash ) {
+        $id = $next->{id};
+        last;
+    }
+
+    return $id;
 }
 
 sub update {
