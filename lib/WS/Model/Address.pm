@@ -64,7 +64,7 @@ sub add {
 sub update {
     my ( $self, %args ) = @_;
 
-    die "Invalid entry\n" unless $args{db} && $args{first_name} && $args{last_name};
+    die "Invalid entry\n" unless $args{db} && $args{id} && $args{first_name} && $args{last_name};
 
     $args{db}->query(
         'UPDATE address SET first_name=?, last_name=?, street=?, city=?, state=?, zip=?, phone=?, phone2=?, email=?, notes=? WHERE id = ?',
