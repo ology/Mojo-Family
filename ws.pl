@@ -106,7 +106,7 @@ group {
 
         if ( $method eq 'Grant' ) {
             my $user = $c->param('username') || $c->param('first_name');
-            my $pass = $c->users->grant(
+            my (undef, $pass) = $c->users->grant(
                 db       => $DB,
                 username => $user,
             );
