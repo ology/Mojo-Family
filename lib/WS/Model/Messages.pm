@@ -37,6 +37,16 @@ sub add {
         'INSERT INTO message (first_name,last_name,email,username,month,day,message) VALUES (?,?,?,?,?,?,?)',
         $args{first_name}, $args{last_name}, $args{email}, $args{username}, $args{month}, $args{day}, $args{message}
     );
+
+    my $results = $args{db}->query('SELECT LAST_INSERT_ID() AS id');
+
+    my $id;
+    while ( my $next = $results->hash ) {
+        $id = $next->{id};
+        last;
+    }
+
+    return $id;
 }
 
 sub delete {
