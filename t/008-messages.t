@@ -22,12 +22,10 @@ my $msg = WS::Model::Messages->new;
 my $entries = $msg->entries($db);
 my $n = scalar @$entries;
 
-my $user = 'Test_' . time;
-
 my ($id) = $msg->add(
     db         => $db,
-    first_name => $user,
-    last_name  => 'Test',
+    first_name => 'Tester',
+    last_name  => 'Testing',
     email      => 'tester@example.com',
 );
 
