@@ -1,5 +1,4 @@
 use Test::More;
-use Test::Exception;
 
 use Mojo::Base -strict;
 use Mojo::mysql;
