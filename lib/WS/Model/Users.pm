@@ -58,7 +58,15 @@ sub grant {
         $args{username}, $encrypted
     );
 
-    return $pass;
+    my $results = $args{db}->query('SELECT LAST_INSERT_ID() AS id');
+
+    my $id;
+    while ( my $next = $results->hash ) {
+        $id = $next->{id};
+        last;
+    }
+
+    return $id, $pass;
 }
 
 sub entries {
