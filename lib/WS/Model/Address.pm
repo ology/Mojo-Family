@@ -49,6 +49,16 @@ sub add {
         'INSERT INTO address (first_name,last_name,street,city,state,zip,phone,phone2,email,notes) VALUES (?,?,?,?,?,?,?,?,?,?)',
         $args{first_name}, $args{last_name}, $args{street}, $args{city}, $args{state}, $args{zip}, $args{phone}, $args{phone2}, $args{email}, $args{notes}
     );
+
+    my $results = $args{db}->query('SELECT LAST_INSERT_ID() AS id');
+
+    my $id;
+    while ( my $next = $results->hash ) {
+        $id = $next->{id};
+        last;
+    }
+
+    return $id;
 }
 
 sub update {
