@@ -20,8 +20,8 @@
     <form action="users" method="post" class="block">
         <input type="hidden" name="id" value="<%= $entry->{id} %>" />
         <input type="hidden" name="username" value="<%= $entry->{username} %>" />
-        <input type="submit" name="Delete" value="Delete" />
-        <input type="submit" name="Reset" value="Reset" />
+        <input type="submit" name="Delete" value="Delete" onclick="return confirm('Delete <%= $entry->{username} %>?')" />
+        <input type="submit" name="Reset" value="Reset" onclick="return confirm('Reset <%= $entry->{username} %>?')" />
     </form>
     <br/>
 % }
