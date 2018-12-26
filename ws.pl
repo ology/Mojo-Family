@@ -73,11 +73,13 @@ any '/' => sub {
     my $pass = $c->param('pass') || '';
 
     # Check password
-    return $c->render
-        unless $c->users->check($DB, $user, $pass);
+    my ($allowed, $active) = $c->users->check($DB, $user, $pass);
+    return $c->render unless $allowed;
 
     # Store username in session
     $c->session(user => $user);
+
+    return $c->render('password') unless $active;
 
     # Redirect to protected page with a 302 response
     $c->redirect_to('chat');
@@ -91,6 +93,29 @@ group {
         return 1 if $c->session('user');
         $c->redirect_to('index');
         return undef;
+    };
+
+    get '/password' => sub {};
+
+    post '/password' => sub {
+        my $c = shift;
+
+        my $pass1 = $c->param('new_password');
+        my $pass2 = $c->param('password_again');
+
+        if ( $pass1 eq $pass2 && length($pass1) >= $c->users->pwsize() ) {
+            $c->users->activate(
+                db       => $DB,
+                user     => $c->session('user'),
+                password => $pass1,
+            );
+
+            $c->redirect_to('chat');
+        }
+        else {
+            $c->flash(message => 'Passwords must match and be at least ' . $c->users->pwsize() . ' characters long.');
+            $c->redirect_to('password');
+        }
     };
 
     get '/messages' => sub {

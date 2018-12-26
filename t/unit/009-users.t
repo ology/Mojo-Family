@@ -34,11 +34,14 @@ my ($id, $pass) = $users->grant(
 $entries = $users->entries($db);
 is $n, scalar(@$entries) - 1, 'new entry';
 
-ok $users->check($db, $user, $pass), 'known user';
+my ($allowed, $active) = $users->check($db, $user, $pass);
+ok $allowed, 'known user';
+ok !$active, 'not yet active';
 
 $pass = $users->reset(db => $db, id => $id);
 
-ok $users->check($db, $user, $pass), 'reset user';
+($allowed, $active) = $users->check($db, $user, $pass);
+ok $allowed, 'reset user';
 
 $users->delete(db => $db, id => $id);
 

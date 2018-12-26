@@ -10,17 +10,24 @@ my $PWSIZE = 6;
 
 sub new { bless {}, shift }
 
+sub pwsize {
+    my ($self) = @_;
+    return $PWSIZE;
+}
+
 sub check {
     my ($self, $db, $user, $pass) = @_;
 
     my $entry = $db->query('SELECT * FROM user WHERE username = ?', $user);
 
     my $password;
+    my $active;
     while (my $next = $entry->hash) {
         $password = $next->{password};
+        $active = $next->{active};
     }
 
-    return Crypt::SaltedHash->validate($password, $pass);
+    return Crypt::SaltedHash->validate($password, $pass), $active;
 }
 
 sub active {
@@ -112,6 +119,21 @@ sub reset {
     );
 
     return $pass;
+}
+
+sub activate {
+    my ($self, %args) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{user} && $args{password};
+
+    my $csh = Crypt::SaltedHash->new( algorithm => 'SHA-1' );
+    $csh->add($args{password});
+    my $encrypted = $csh->generate;
+
+    $args{db}->query(
+        'UPDATE user SET password=?, active=1 WHERE username = ?',
+        $encrypted, $args{user}
+    );
 }
 
 1;
