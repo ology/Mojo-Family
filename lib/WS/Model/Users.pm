@@ -79,7 +79,7 @@ sub grant {
 sub entries {
     my ($self, $db) = @_;
 
-    my $entries = $db->query('SELECT * FROM user WHERE admin != 1 ORDER BY created');
+    my $entries = $db->query('SELECT * FROM user ORDER BY created');
 
     my @entries;
     while (my $next = $entries->hash) {
