@@ -1,8 +1,8 @@
 use Test::More;
-use Test::Mojo;
+use Test::Mojo::Session;
 use Mojo::File qw( path );
 
-my $t = Test::Mojo->new( path('ws.pl') );
+my $t = Test::Mojo::Session->new( path('ws.pl') );
 
 # Allow 302 redirect responses
 $t->ua->max_redirects(1);
@@ -16,7 +16,10 @@ $t->get_ok('/')
 
 # Test login with valid credentials
 $t->post_ok('/' => form => {user => 'Gene', pass => 'abc123'})
-  ->status_is(200);
+  ->status_is(200)
+  ->session_ok
+  ->session_has('/user')
+  ->session_is('/user' => 'Gene');
 
 # Test accessing a protected page
 $t->get_ok('/chat')
