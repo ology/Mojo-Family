@@ -15,7 +15,7 @@ $t->get_ok('/')
   ->element_exists('form input[type="submit"]');
 
 # Test login with valid credentials
-$t->post_ok('/' => form => {user => 'Gene', pass => 'aisa123'})
+$t->post_ok('/' => form => {user => 'Gene', pass => 'abc123'})
   ->status_is(200);
 
 # Test accessing a protected page
