@@ -81,6 +81,14 @@ any '/' => sub {
 
     return $c->render('password') unless $active;
 
+    my $entries = $c->users->active($DB);
+    for my $entry ( @$entries ) {
+        if ( $user = $entry->{username} ) {
+            $c->session(admin => $entry->{admin});
+            last;
+        }
+    }
+
     # Redirect to protected page with a 302 response
     $c->redirect_to('chat');
 } => 'index';
