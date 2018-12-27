@@ -103,6 +103,12 @@ group {
         return undef;
     };
 
+    get '/log' => sub {
+        my $c = shift;
+        my $entries = $c->users->active($DB);
+        $c->stash(entries => $entries);
+    };
+
     get '/password' => sub {};
 
     post '/password' => sub {

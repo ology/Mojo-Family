@@ -1,0 +1,19 @@
+% layout 'default', title => 'Log';
+
+<div class="container">
+
+%= include 'header', title => 'Log';
+
+<br>
+
+<ol>
+% for my $entry ( @$entries ) {
+    <li>
+    <%== $entry->{username} %>
+    (<%= $entry->{remote_addr} %>):
+    <%= $entry->{last_login} %>
+    </li>
+% }
+</ol>
+
+</div>
