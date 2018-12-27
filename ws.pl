@@ -89,6 +89,8 @@ any '/' => sub {
         }
     }
 
+    $c->users->track(db => $DB, user => $user, tz => app->config->{timezone});
+
     # Redirect to protected page with a 302 response
     $c->redirect_to('chat');
 } => 'index';

@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Crypt::SaltedHash;
+use DateTime;
 use Text::Password::Pronounceable;
 
 my $PWSIZE = 6;
@@ -133,6 +134,21 @@ sub activate {
     $args{db}->query(
         'UPDATE user SET password=?, active=1 WHERE username = ?',
         $encrypted, $args{user}
+    );
+}
+
+sub track {
+    my ($self, %args) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{user};
+
+    $args{tz} ||= 'local';
+
+    my $now = DateTime->now( time_zone => $args{tz} );
+
+    $args{db}->query(
+        'UPDATE user SET last_login=? WHERE username = ?',
+        $now, $args{user}
     );
 }
 
