@@ -33,7 +33,7 @@ sub check {
 sub active {
     my ($self, $db) = @_;
 
-    my $entries = $db->query('SELECT * FROM user WHERE active = 1');
+    my $entries = $db->query('SELECT * FROM user WHERE active = 1 ORDER BY last_login');
 
     my @entries;
     while (my $next = $entries->hash) {
