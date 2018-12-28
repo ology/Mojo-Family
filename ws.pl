@@ -17,8 +17,10 @@ plugin 'Config';
 
 my $CWD = cwd();
 
+# Locate the chat file
 my $CHATFILE = $CWD . '/chat.txt';
 
+# Establish a database connection
 my $DB = Mojo::mysql->strict_mode(
     sprintf 'mysql://%s:%s@%s/%s', app->config->{dbuser}, app->config->{dbpass}, app->config->{dbhost}, app->config->{dbname}
 )->db;
@@ -38,27 +40,33 @@ helper calendar => sub { state $calendar = WS::Model::Calendar->new };
 helper address => sub { state $address = WS::Model::Address->new };
 helper album => sub { state $album = WS::Model::Album->new };
  
+# Connected websocket clients
 my $clients = {};
 
 websocket '/echo' => sub {
     my $c = shift;
 
+    # Set a long timeout
     $c->inactivity_timeout(86400);
 
+    # Get this client id
     my $id = sprintf '%s', $c->tx;
     $clients->{$id} = $c->tx;
 
     $c->on(json => sub {
         my ($ctrl, $hash) = @_;
 
+        # Add the new message to the chat file
         $ctrl->chat->add(
             $CHATFILE, $ctrl->session('user'), app->config->{timezone}, $hash->{msg}
         );
 
+        # HTML format the message text
         $hash->{msg} = $ctrl->chat->format(
             $ctrl->session('user'), app->config->{timezone}, $hash->{msg}
         );
 
+        # Send the message to the connected clients
         for (keys %$clients) {
             $clients->{$_}->send({json => $hash});
         }
@@ -79,8 +87,10 @@ any '/' => sub {
     # Store username in session
     $c->session(user => $user);
 
+    # Render the password reset form if not yet active
     return $c->render('password') unless $active;
 
+    # Store admin in session for username
     my $entries = $c->users->active($DB);
     for my $entry ( @$entries ) {
         if ( $user = $entry->{username} ) {
@@ -89,6 +99,7 @@ any '/' => sub {
         }
     }
 
+    # Log the presence of the user
     $c->users->track(db => $DB, user => $user, tz => app->config->{timezone});
 
     # Redirect to protected page with a 302 response
@@ -99,9 +110,12 @@ any '/' => sub {
 group {
     under sub {
         my $c = shift;
+
         # Redirect to main page with a 302 response if user is not logged in
         return 1 if $c->session('user');
+
         $c->redirect_to('index');
+
         return undef;
     };
 
