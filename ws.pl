@@ -388,6 +388,9 @@ group {
         if ( $upload ) {
             my $size = $upload->size;
             my $name = $upload->filename;
+
+            $upload->move_to("public/album/$target/$name");
+
             $c->flash(message => "Uploaded $size byte file: $name");
         }
 
