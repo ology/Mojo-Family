@@ -456,6 +456,8 @@ group {
 
         $c->redirect_to("/album?user=$target");
     };
+
+    get '/cookbook' => sub {};
 };
 
 get '/request' => sub {};
