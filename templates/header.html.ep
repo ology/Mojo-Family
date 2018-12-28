@@ -9,7 +9,7 @@
         <b><a class="button" href="/chat">Chat</a></b>
         <b><a class="button" href="/cookbook">Cookbook</a></b>
 % if ( $c->session('admin') ) {
-        <b><a class="button" href="/ban">Bans</a></b>
+        <b><a class="button" href="/bans">Bans</a></b>
         <b><a class="button" href="/history">History</a></b>
         <b><a class="button" href="/log">Log</a></b>
         <b><a class="button" href="/messages">Messages</a></b>
