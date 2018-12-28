@@ -51,4 +51,23 @@ sub delete {
     $args{db}->query( 'DELETE FROM ban WHERE id = ?', $args{id} );
 }
 
+sub is_banned {
+    my ( $self, %args ) = @_;
+
+    die "Invalid entry\n" unless $args{db} && $args{ip};
+
+    my $entries = $args{db}->query( 'SELECT * FROM ban WHERE ip = ?', $args{ip} );
+
+    my @entries;
+    while (my $next = $entries->hash) {
+        push @entries, {
+            id        => $next->{id},
+            ip        => $next->{ip}, 
+            last_seen => $next->{last_seen},
+        };
+    }
+
+    return @entries ? 1 : 0;
+}
+
 1;
