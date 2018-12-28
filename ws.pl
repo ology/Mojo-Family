@@ -80,6 +80,10 @@ websocket '/echo' => sub {
 any '/' => sub {
     my $c = shift;
 
+    if ( $c->bans->is_banned(db => $DB, ip => $c->tx->remote_address) ) {
+        return $c->render(text => 'Forbidden', status => 403);
+    }
+
     # Query parameters
     my $user = $c->param('user') || '';
     my $pass = $c->param('pass') || '';
