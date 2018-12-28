@@ -12,6 +12,7 @@ use WS::Model::Calendar;
 use WS::Model::Address;
 use WS::Model::Messages;
 use WS::Model::Album;
+use WS::Model::Bans;
 
 #plugin NYTProf => { nytprof => {} };
 
@@ -41,6 +42,7 @@ helper chat => sub { state $chat = WS::Model::Chat->new };
 helper calendar => sub { state $calendar = WS::Model::Calendar->new };
 helper address => sub { state $address = WS::Model::Address->new };
 helper album => sub { state $album = WS::Model::Album->new };
+helper bans => sub { state $bans = WS::Model::Bans->new };
  
 # Connected websocket clients
 my $clients = {};
@@ -120,6 +122,27 @@ group {
         $c->redirect_to('index');
 
         return undef;
+    };
+
+    get '/bans' => sub {
+        my $c = shift;
+        my $entries = $c->bans->entries($DB);
+        $c->stash(entries => $entries);
+    };
+
+    post '/bans' => sub {
+        my $c = shift;
+
+        my $method = $c->param('Ban') || $c->param('Delete');
+
+        if ( $method eq 'Ban' ) {
+            $c->bans->add(db => $DB, ip => $c->param('ip'));
+        }
+        elsif ( $method eq 'Delete' ) {
+            $c->bans->delete(db => $DB, id => $c->param('id'));
+        }
+
+        $c->redirect_to('bans');
     };
 
     get '/log' => sub {

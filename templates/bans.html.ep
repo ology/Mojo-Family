@@ -1,0 +1,29 @@
+% layout 'default', title => 'Bans';
+
+<div class="container">
+
+%= include 'header', title => 'Bans';
+
+<br>
+
+%= form_for bans => (method => 'POST') => begin
+    <input type="text" name="ip" size="15" maxlength="15" placeholder="IP address" />
+    <input type="submit" name="Ban" value="Ban" id="Ban" class="button-primary" />
+    <input type="reset" name="reset" value="Reset" class="button" />
+% end
+
+<hr>
+
+<ol>
+% for my $entry ( @$entries ) {
+    <li>
+        <%== $entry->{ip} %>: <%= $entry->{last_seen} %>
+        <form action="bans" method="post" class="block">
+            <input type="submit" name="Delete" value="Delete" id="Delete" class="button" />
+            <input type="hidden" name="id" value="<%= $entry->{id} %>" />
+        </form>
+    </li>
+% }
+</ol>
+
+</div>
