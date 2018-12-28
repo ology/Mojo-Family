@@ -32,13 +32,8 @@ sub add {
         $args{ip}
     );
 
-    my $results = $args{db}->query('SELECT LAST_INSERT_ID() AS id');
-
-    my $id;
-    while ( my $next = $results->hash ) {
-        $id = $next->{id};
-        last;
-    }
+    my $db = WS::Model::DB->new;
+    my $id = $db->last_insert_id($args{db});
 
     return $id;
 }

@@ -3,6 +3,8 @@ package WS::Model::Address;
 use strict;
 use warnings;
 
+use WS::Model::DB;
+
 sub new { bless {}, shift }
 
 sub addrs {
@@ -50,13 +52,8 @@ sub add {
         $args{first_name}, $args{last_name}, $args{street}, $args{city}, $args{state}, $args{zip}, $args{phone}, $args{phone2}, $args{email}, $args{notes}
     );
 
-    my $results = $args{db}->query('SELECT LAST_INSERT_ID() AS id');
-
-    my $id;
-    while ( my $next = $results->hash ) {
-        $id = $next->{id};
-        last;
-    }
+    my $db = WS::Model::DB->new;
+    my $id = $db->last_insert_id($args{db});
 
     return $id;
 }
