@@ -27,6 +27,11 @@ my ($id) = $bans->add(
 $entries = $bans->entries($db);
 is $n, scalar(@$entries) - 1, 'new entries';
 
+ok $bans->is_banned(
+    db => $db,
+    ip => '123.234.345.456',
+), 'is_banned';
+
 $bans->delete(db => $db, id => $id);
 
 $entries = $bans->entries($db);
