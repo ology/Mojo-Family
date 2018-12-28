@@ -113,9 +113,10 @@ group {
     under sub {
         my $c = shift;
 
-        # Redirect to main page with a 302 response if user is not logged in
+        # We are authorized to proceed
         return 1 if $c->session('user');
 
+        # Redirect to main page with a 302 response if user is not logged in
         $c->redirect_to('index');
 
         return undef;
