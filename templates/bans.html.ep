@@ -17,7 +17,7 @@
 <ol>
 % for my $entry ( @$entries ) {
     <li>
-        <%== $entry->{ip} %>: <%= $entry->{last_seen} %>
+        <%== $entry->{ip} %>
         <form action="bans" method="post" class="block">
             <input type="submit" name="Delete" value="Delete" id="Delete" class="button" />
             <input type="hidden" name="id" value="<%= $entry->{id} %>" />
