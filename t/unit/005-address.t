@@ -10,12 +10,9 @@ use_ok 'WS::Model::Address';
 
 my $t = Test::Mojo->new( path('ws.pl') );
 
-my $config = $t->app->plugin('Config');
-
-my $mysql = Mojo::mysql->strict_mode(
-    sprintf 'mysql://%s:%s@%s/%s', $config->{dbuser}, $config->{dbpass}, $config->{dbhost}, $config->{dbname}
-);
-my $db = $mysql->db;
+use lib 't';
+use DB;
+my $db = DB::connect($t);
 
 my $addr = WS::Model::Address->new;
 
