@@ -13,6 +13,8 @@ use WS::Model::Address;
 use WS::Model::Messages;
 use WS::Model::Album;
 
+#plugin NYTProf => { nytprof => {} };
+
 plugin 'Config';
 
 my $CWD = cwd();
