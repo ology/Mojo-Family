@@ -372,7 +372,23 @@ group {
         $user = $c->param('user');
         $c->stash(user => $user);
 
-        my $entries = defined $user ? $c->album->files($user) : $c->users->active($DB);
+        my $users = $c->users->active($DB);
+        my $files;
+        for my $u ( @$users ) {
+            my $f = $c->album->files($u->{username});
+            $files->{ $u->{username} } = $f;
+            $u->{pic} = $f->[0];
+        }
+
+        my $entries;
+
+        if ( $user ) {
+            $entries = $files->{$user};
+        }
+        else {
+            $entries = $users;
+        }
+
         $c->stash(entries => $entries);
     };
 
