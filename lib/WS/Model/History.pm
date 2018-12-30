@@ -15,6 +15,7 @@ sub entries {
     my $sql = 'SELECT * FROM history';
 
     my $entries;
+    my @binds = ();
 
     if ( keys %args ) {
         my $start = delete $args{when_start};
@@ -55,22 +56,13 @@ sub entries {
 
             $sql .= join ' AND ', @params;
 
-            $sql .= ' ORDER BY `when` DESC';
-
-            $entries = $db->query($sql, @dates, map { '%' . $args{$_} . '%' } grep { $args{$_} } sort keys %args);
-        }
-        else {
-            $sql .= ' ORDER BY `when` DESC';
-
-            $entries = $db->query($sql);
+            @binds = ( @dates, map { '%' . $args{$_} . '%' } grep { $args{$_} } sort keys %args );
         }
     }
-    else {
-        $sql .= ' ORDER BY `when` DESC';
 
-        $entries = $db->query($sql);
-    }
+    $sql .= ' ORDER BY `when` DESC';
 
+    $entries = $db->query($sql, @binds);
 
     my @entries;
     if ( $entries ) {
