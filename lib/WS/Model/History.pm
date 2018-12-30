@@ -89,11 +89,6 @@ sub add {
         'INSERT INTO history (who,what,remote_addr) VALUES (?,?,?)',
         $args{who}, $args{what}, $args{remote_addr}
     );
-
-    my $db = WS::Model::DB->new;
-    my $id = $db->last_insert_id($args{db});
-
-    return $id;
 }
 
 1;
