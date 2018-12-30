@@ -61,8 +61,14 @@ sub entries {
         }
         else {
             $sql .= ' ORDER BY `when` DESC';
+
             $entries = $db->query($sql);
         }
+    }
+    else {
+        $sql .= ' ORDER BY `when` DESC';
+
+        $entries = $db->query($sql);
     }
 
 
