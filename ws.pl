@@ -163,9 +163,23 @@ group {
 
         if ( $method eq 'Ban' ) {
             $c->bans->add(db => $DB, ip => $c->param('ip'));
+
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Add ban for ip: ' . $c->param('ip'),
+                remote_addr => $c->tx->remote_address,
+            );
         }
         elsif ( $method eq 'Delete' ) {
             $c->bans->delete(db => $DB, id => $c->param('id'));
+
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Delete ban for id: ' . $c->param('id'),
+                remote_addr => $c->tx->remote_address,
+            );
         }
 
         $c->redirect_to('bans');
@@ -192,6 +206,12 @@ group {
                 password => $pass1,
             );
 
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Reset password for: ' . $c->session('user'),
+                remote_addr => $c->tx->remote_address,
+            );
             $c->redirect_to('chat');
         }
         else {
@@ -273,11 +293,25 @@ group {
             );
 
             $c->album->delete($c->param('username'));
+
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Delete user id: ' . $c->param('id'),
+                remote_addr => $c->tx->remote_address,
+            );
         }
         elsif ( $method eq 'Reset' ) {
             my $pass = $c->users->reset(
                 db => $DB,
                 id => $c->param('id'),
+            );
+
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Reset password for id: ' . $c->param('id'),
+                remote_addr => $c->tx->remote_address,
             );
 
             $c->flash(message => 'User: ' . $c->param('username') . ", Temporary password: $pass");
@@ -338,6 +372,13 @@ group {
                 note   => defang( $c->param('event_note') ),
                 sticky => $c->param('event_sticky'),
             );
+
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Add calendar event: ' . $c->param('event_title'),
+                remote_addr => $c->tx->remote_address,
+            );
         }
         elsif ( $method eq 'Update' ) {
             $c->calendar->update(
@@ -348,6 +389,13 @@ group {
                 day    => $c->param('event_day'),
                 note   => defang( $c->param('event_note') ),
                 sticky => $c->param('event_sticky'),
+            );
+
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Update calendar event id: ' . $c->param('id'),
+                remote_addr => $c->tx->remote_address,
             );
         }
         elsif ( $method eq 'Delete' ) {
@@ -404,6 +452,13 @@ group {
                 email      => defang( $c->param('email') ),
                 notes      => defang( $c->param('notes') ),
             );
+
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Add address for: ' . $c->param('first_name') . ' ' . $c->param('last_name'),
+                remote_addr => $c->tx->remote_address,
+            );
         }
         elsif ( $method eq 'Update' ) {
             $c->address->update(
@@ -420,11 +475,25 @@ group {
                 email      => defang( $c->param('email') ),
                 notes      => defang( $c->param('notes') ),
             );
+
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Update address id: ' . $c->param('id'),
+                remote_addr => $c->tx->remote_address,
+            );
         }
         elsif ( $method eq 'Delete' ) {
             $c->address->delete(
                 db => $DB,
                 id => $c->param('id'),
+            );
+
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Delete address id: ' . $c->param('id'),
+                remote_addr => $c->tx->remote_address,
             );
         }
 
@@ -472,6 +541,13 @@ group {
             my $name = $upload->filename;
 
             $upload->move_to("public/album/$target/$name");
+
+            $c->history->add(
+                db          => $DB,
+                who         => $c->session('user'),
+                what        => 'Upload file: ' . $name,
+                remote_addr => $c->tx->remote_address,
+            );
 
             $c->flash(message => "Uploaded $size byte file: $name");
         }
