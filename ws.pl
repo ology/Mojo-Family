@@ -13,6 +13,7 @@ use WS::Model::Address;
 use WS::Model::Messages;
 use WS::Model::Album;
 use WS::Model::Bans;
+use WS::Model::History;
 
 #plugin NYTProf => { nytprof => {} };
 
@@ -43,6 +44,7 @@ helper calendar => sub { state $calendar = WS::Model::Calendar->new };
 helper address => sub { state $address = WS::Model::Address->new };
 helper album => sub { state $album = WS::Model::Album->new };
 helper bans => sub { state $bans = WS::Model::Bans->new };
+helper history => sub { state $history = WS::Model::History->new };
  
 # Connected websocket clients
 my $clients = {};
@@ -126,6 +128,26 @@ group {
         $c->redirect_to('index');
 
         return undef;
+    };
+
+    get '/history' => sub {
+        my $c = shift;
+        my $entries = $c->history->entries(db => $DB);
+        $c->stash(entries => $entries);
+    };
+
+    post '/history' => sub {
+        my $c = shift;
+        my $entries = $c->history->entries(
+            db          => $DB,
+            who         => $c->param('who'),
+            what        => $c->param('what'),
+            remote_addr => $c->param('remote_addr'),
+            when_start  => $c->param('when_start'),
+            when_end    => $c->param('when_end'),
+        );
+        $c->stash(entries => $entries);
+        $c->redirect_to('history');
     };
 
     get '/bans' => sub {
