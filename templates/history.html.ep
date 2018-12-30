@@ -23,7 +23,7 @@
     <%== $entry->{who} %>
     (<%= $entry->{remote_addr} %>):
     <%= $entry->{when} %> -
-    <%= $entry->{what} %>
+    <%== $entry->{what} %>
     </li>
 % }
 </ol>
