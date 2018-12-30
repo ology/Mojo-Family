@@ -147,7 +147,7 @@ group {
             when_end    => $c->param('when_end'),
         );
         $c->stash(entries => $entries);
-        $c->redirect_to('history');
+        $c->render('history');
     };
 
     get '/bans' => sub {
