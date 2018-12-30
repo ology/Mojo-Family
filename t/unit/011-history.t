@@ -1,10 +1,8 @@
 use Test::More;
 
 use Mojo::Base -strict;
-use Mojo::mysql;
 use Test::Mojo;
 use Mojo::File qw( path );
-use Mojolicious::Plugin::Config;
 
 use_ok 'WS::Model::History';
 
