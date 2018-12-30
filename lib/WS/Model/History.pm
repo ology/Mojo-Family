@@ -67,14 +67,16 @@ sub entries {
 
 
     my @entries;
-    while (my $next = $entries->hash) {
-        push @entries, {
-            id          => $next->{id},
-            who         => $next->{who},
-            what        => $next->{what},
-            when        => $next->{when},
-            remote_addr => $next->{remote_addr},
-        };
+    if ( $entries ) {
+        while (my $next = $entries->hash) {
+            push @entries, {
+                id          => $next->{id},
+                who         => $next->{who},
+                what        => $next->{what},
+                when        => $next->{when},
+                remote_addr => $next->{remote_addr},
+            };
+        }
     }
 
     return \@entries;
