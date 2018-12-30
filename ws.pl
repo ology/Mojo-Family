@@ -132,7 +132,7 @@ group {
 
     get '/history' => sub {
         my $c = shift;
-        my $entries = $c->history->entries(db => $DB);
+        my $entries;
         $c->stash(entries => $entries);
     };
 
