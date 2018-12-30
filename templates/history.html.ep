@@ -6,6 +6,17 @@
 
 <br>
 
+<form action="/history" method="post">
+    <input type="text" name="who" size="20" maxlength="20" value="" placeholder="Who?" />
+    <input type="text" name="what" size="20" value="" placeholder="What?" />
+    <input type="text" name="remote_addr" size="20" value="" placeholder="IP?" />
+    <br/>
+    <input type="text" name="when_start" size="20" maxlength="20" value="" placeholder="When start?" />
+    <input type="text" name="when_end" size="20" maxlength="20" value="" placeholder="When end?" />
+    <input type="submit" name="search" value="Search" class="button-primary" />
+    <input type="reset" name="reset" value="Reset" class="button" />
+</form>
+
 <ol>
 % for my $entry ( @$entries ) {
     <li>
