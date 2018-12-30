@@ -3,6 +3,8 @@ package WS::Model::History;
 use strict;
 use warnings;
 
+use Date::Manip;
+
 sub new { bless {}, shift }
 
 sub entries {
@@ -18,7 +20,21 @@ sub entries {
         my $start = delete $args{when_start};
         my $end   = delete $args{when_end};
 
-        if ( $start && $end ) {
+        if ( $start || $end ) {
+            if ( $start ) {
+                $start = ParseDate($start);
+                $start = join '-', UnixDate( $start, '%Y', '%m', '%d', '%T' );
+            }
+            else {
+                $start = '1970-01-01';
+            }
+            if ( $end ) {
+                $end = ParseDate($end);
+                $end = join '-', UnixDate( $end, '%Y', '%m', '%d', '%T' );
+            }
+            else {
+                $end = '2032-12-31';
+            }
         }
 
         my @params;
@@ -27,13 +43,24 @@ sub entries {
             push @params, "$param LIKE ?";
         }
 
-        if ( @params ) {
+        if ( @params || $start ) {
             $sql .= ' WHERE ';
+
+            my @dates = ();
+            if ( $start ) {
+                $sql .= '`when` BETWEEN ? AND ?';
+                $sql .= ' AND ' if @params;
+                @dates = ( $start, $end );
+            }
+
             $sql .= join ' AND ', @params;
 
-            $entries = $db->query($sql, map { '%' . $args{$_} . '%' } grep { $args{$_} } sort keys %args);
+            $sql .= ' ORDER BY `when` DESC';
+
+            $entries = $db->query($sql, @dates, map { '%' . $args{$_} . '%' } grep { $args{$_} } sort keys %args);
         }
         else {
+            $sql .= ' ORDER BY `when` DESC';
             $entries = $db->query($sql);
         }
     }
