@@ -17,7 +17,7 @@ my $history = WS::Model::History->new;
 my $entries = $history->entries(db => $db);
 my $n = scalar @$entries;
 
-my ($id) = $history->add(
+$history->add(
     db          => $db,
     who         => 'Tester',
     what        => 'Testing',
