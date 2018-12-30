@@ -13,7 +13,7 @@
 
 
 % for my $entry ( @$entries ) {
-    Username: <%== $entry->{username} %>
+    <%== $entry->{username} %>
     (id=<%= $entry->{id} %>)
     <br/>
     Active: <%= $entry->{active} %>, Admin: <%= $entry->{admin} %>
