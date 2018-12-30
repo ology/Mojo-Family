@@ -8,7 +8,36 @@ sub new { bless {}, shift }
 sub entries {
     my ($self, %args) = @_;
 
-    my $entries = $args{db}->query('SELECT * FROM history');
+    my $db = delete $args{db};
+
+    my $sql = 'SELECT * FROM history';
+
+    my $entries;
+
+    if ( keys %args ) {
+        my $start = delete $args{when_start};
+        my $end   = delete $args{when_end};
+
+        if ( $start && $end ) {
+        }
+
+        my @params;
+        for my $param ( sort keys %args ) {
+            next unless $args{$param};
+            push @params, "$param LIKE ?";
+        }
+
+        if ( @params ) {
+            $sql .= ' WHERE ';
+            $sql .= join ' AND ', @params;
+
+            $entries = $db->query($sql, map { '%' . $args{$_} . '%' } grep { $args{$_} } sort keys %args);
+        }
+        else {
+            $entries = $db->query($sql);
+        }
+    }
+
 
     my @entries;
     while (my $next = $entries->hash) {
