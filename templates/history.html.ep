@@ -1,0 +1,20 @@
+% layout 'default', title => 'History';
+
+<div class="container">
+
+%= include 'header', title => 'History';
+
+<br>
+
+<ol>
+% for my $entry ( @$entries ) {
+    <li>
+    <%== $entry->{who} %>
+    (<%= $entry->{remote_addr} %>):
+    <%= $entry->{when} %> -
+    <%= $entry->{what} %>
+    </li>
+% }
+</ol>
+
+</div>
