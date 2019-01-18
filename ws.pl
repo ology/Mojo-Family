@@ -509,10 +509,11 @@ group {
 
         my $users = $c->users->active($DB);
         my $files;
-        for my $u ( @$users ) {
-            my $f = $c->album->files($u->{username});
-            $files->{ $u->{username} } = $f;
-            $u->{pic} = $f->[0];
+        for my $u ( @$users, 'Family' ) {
+            my $name = $u eq 'Family' ? 'Family' : $u->{username};
+            my $f = $c->album->files($name);
+            $files->{$name} = $f;
+            $u->{pic} = $f->[0] unless $name eq 'Family';
         }
 
         my $entries;
