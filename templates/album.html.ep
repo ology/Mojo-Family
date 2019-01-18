@@ -12,7 +12,7 @@
 <div id="data">
 
 % if ( defined $user ) {
-    % if ( $user eq $c->session('user') ) {
+    % if ( $user eq $c->session('user') || $user eq 'Family' ) {
     <form action="/album" method="POST" enctype="multipart/form-data">
         <input type="file" name="filename"/>
         <input type="hidden" name="target" value="<%= $user %>"/>
