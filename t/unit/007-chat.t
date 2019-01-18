@@ -8,7 +8,7 @@ use_ok 'WS::Model::Chat';
 
 my $t = Test::Mojo->new( path('ws.pl') );
 
-my $chat = WS::Model::Chat->new;
+my $chat = new_ok('WS::Model::Chat');
 
 my $lines = $chat->lines('chat.txt');
 my $n = scalar @$lines;

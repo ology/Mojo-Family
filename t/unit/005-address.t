@@ -12,7 +12,7 @@ use lib 't';
 use DB;
 my $db = DB::connect($t);
 
-my $addr = WS::Model::Address->new;
+my $addr = new_ok('WS::Model::Address');
 
 my $addrs = $addr->addrs($db);
 my $n = scalar @$addrs;

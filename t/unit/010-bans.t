@@ -12,7 +12,7 @@ use lib 't';
 use DB;
 my $db = DB::connect($t);
 
-my $bans = WS::Model::Bans->new;
+my $bans = new_ok('WS::Model::Bans');
 
 my $entries = $bans->entries($db);
 my $n = scalar @$entries;

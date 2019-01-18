@@ -12,7 +12,7 @@ use lib 't';
 use DB;
 my $db = DB::connect($t);
 
-my $users = WS::Model::Users->new;
+my $users = new_ok('WS::Model::Users');
 
 my $user = 'test_' . time;
 

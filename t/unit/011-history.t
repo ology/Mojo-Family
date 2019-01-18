@@ -12,7 +12,7 @@ use lib 't';
 use DB;
 my $db = DB::connect($t);
 
-my $history = WS::Model::History->new;
+my $history = new_ok('WS::Model::History');
 
 my $entries = $history->entries(db => $db);
 my $n = scalar @$entries;

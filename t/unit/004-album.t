@@ -7,7 +7,7 @@ use Test::Exception;
 
 use_ok 'WS::Model::Album';
 
-my $album = WS::Model::Album->new;
+my $album = new_ok('WS::Model::Album');
 
 my $files = $album->files('Family');
 

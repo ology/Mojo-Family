@@ -12,7 +12,7 @@ use lib 't';
 use DB;
 my $db = DB::connect($t);
 
-my $msg = WS::Model::Messages->new;
+my $msg = new_ok('WS::Model::Messages');
 
 my $entries = $msg->entries($db);
 my $n = scalar @$entries;

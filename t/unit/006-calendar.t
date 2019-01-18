@@ -12,7 +12,7 @@ use lib 't';
 use DB;
 my $db = DB::connect($t);
 
-my $cal = WS::Model::Calendar->new;
+my $cal = new_ok('WS::Model::Calendar');
 
 my $events = $cal->events($db, 'local', undef, 1);
 my $n = scalar @$events;
