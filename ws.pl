@@ -508,12 +508,13 @@ group {
         $c->stash(user => $user);
 
         my $users = $c->users->active($DB);
+        push @$users, { username => 'Family' };
         my $files;
-        for my $u ( @$users, 'Family' ) {
-            my $name = $u eq 'Family' ? 'Family' : $u->{username};
+        for my $u ( @$users ) {
+            my $name = $u->{username};
             my $f = $c->album->files($name);
             $files->{$name} = $f;
-            $u->{pic} = $f->[0] unless $name eq 'Family';
+            $u->{pic} = $f->[0];
         }
 
         my $entries;
