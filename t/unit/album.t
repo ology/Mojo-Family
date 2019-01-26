@@ -9,14 +9,6 @@ use_ok 'WS::Model::Album';
 
 my $album = new_ok('WS::Model::Album');
 
-my $files = $album->files('Family');
-
-my $expected = [qw(
-    /album/Family/example_family.jpg
-)];
-
-is_deeply $files, $expected, 'Family files';
-
 my $user = 'test_' . time;
 
 $album->add($user);
