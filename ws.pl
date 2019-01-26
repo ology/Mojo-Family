@@ -508,7 +508,7 @@ group {
         $c->stash(user => $user);
 
         my $users = $c->users->active($DB);
-        push @$users, { username => 'Family' };
+        unshift @$users, { username => 'Family' };
         my $files;
         for my $u ( @$users ) {
             my $name = $u->{username};
