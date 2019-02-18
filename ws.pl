@@ -60,16 +60,16 @@ websocket '/echo' => sub {
     $clients->{$id} = $c->tx;
 
     $c->on(json => sub {
-        my ($ctrl, $hash) = @_;
+        my ($c, $hash) = @_;
 
         # Add the new message to the chat file
-        $ctrl->chat->add(
-            $CHATFILE, $ctrl->session('user'), app->config->{timezone}, $hash->{msg}
+        $c->chat->add(
+            $CHATFILE, $c->session('user'), app->config->{timezone}, $hash->{msg}
         );
 
         # HTML format the message text
-        $hash->{msg} = $ctrl->chat->format(
-            $ctrl->session('user'), app->config->{timezone}, $hash->{msg}
+        $hash->{msg} = $c->chat->format(
+            $c->session('user'), app->config->{timezone}, $hash->{msg}
         );
 
         # Send the message to the connected clients
