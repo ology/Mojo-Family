@@ -263,7 +263,7 @@ group {
             $c->stash(password => $pass);
             $c->stash(email => $c->param('email'));
             $c->stash(database => app->config->{dbname});
-            $c->stash(website => 'http://dev.ology.net:8880');
+            $c->stash(website => app->config->{website});
 
             $c->render('email');
         }
